@@ -1,45 +1,29 @@
 import Head from "next/head";
-import { Layout } from "../components/Layout";
-import Link from "next/link";
-import Past from "./past";
-import { useRouter } from "next/router";
 
-export default function Home() {
-  const router = useRouter();
-  console.log(router);
-
+const Past = (props) => {
   return (
     <div className="container">
       <Head>
-        <title>Hey, Okay</title>
+        <title>Woah, hey</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <section>
-          <h1 className="title">dulcet.space</h1>
+          <h1 className="title">the past</h1>
 
-          <p className="description">This will all change eventually</p>
+          <p className="description">This has all changed accordingly</p>
 
           <div className="footnote">
-            <p>might not even see the light of day</p>
+            <p>so long, and don't forget</p>
           </div>
         </section>
       </main>
-
       <style jsx>{`
         .description {
           line-height: 1.5;
           font-size: var(--text-medium);
           color: var(--medium);
-        }
-        .navigation-menu {
-          line-height: 1.5;
-          font-size: var(--small);
-          color: var(--medium);
-          position: absolute;
-          left: 0.25rem;
-          top: 0.5rem;
         }
         .title {
           margin: 0;
@@ -57,4 +41,6 @@ export default function Home() {
       `}</style>
     </div>
   );
-}
+};
+
+export default Past;
