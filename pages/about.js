@@ -1,10 +1,9 @@
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
 
 const textVariants = {
   exit: {
-    y: -200,
+    y: 200,
     opacity: 0,
     transition: { duration: 0.2, ease: "easeOut" },
   },
@@ -21,13 +20,11 @@ const textVariants = {
   },
 };
 
-const Index = () => {
-  const router = useRouter();
-
+const About = () => {
   return (
     <div className="container">
       <Head>
-        <title>Hello</title>
+        <title>About</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -39,23 +36,25 @@ const Index = () => {
             exit="exit"
             variants={textVariants}
           >
-            <h1 className="title">Hey, I'm Eric.</h1>
-            <h2 className="subtitle">What would you like to know?</h2>
+            <h1 className="title">Full Stack Developer</h1>
+
+            <p className="description">
+              Focused on the modern Javascript ecosystem.
+            </p>
           </motion.div>
         </section>
       </main>
 
       <style jsx>{`
+        .description {
+          line-height: 1.5;
+          font-size: var(--text-medium);
+          color: var(--dark);
+        }
         .title {
           margin: 0;
           line-height: 1.15;
           font-size: var(--text-extra-large);
-          color: var(--dark);
-        }
-        .subtitle {
-          margin: 0;
-          line-height: 1.5;
-          font-size: var(--text-large);
           color: var(--medium);
         }
         @media (max-width: 600px) {
@@ -65,4 +64,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default About;

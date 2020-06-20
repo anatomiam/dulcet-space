@@ -1,22 +1,44 @@
 import Head from "next/head";
+import { motion } from "framer-motion";
+
+const textVariants = {
+  exit: {
+    x: 200,
+    opacity: 0,
+    transition: { duration: 0.2, ease: "easeOut" },
+  },
+  enter: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      delay: 0,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+      duration: 0.25,
+      ease: "easeIn",
+    },
+  },
+};
 
 const Future = () => {
   return (
     <div className="container">
       <Head>
-        <title>Hey, where ya goin</title>
+        <title>Future</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <section>
-          <h1 className="title">the future</h1>
-
-          <p className="description">is not what it used to be</p>
-
-          <div className="footnote">
-            <p>can't you see</p>
-          </div>
+          <motion.div
+            initial="exit"
+            animate="enter"
+            exit="exit"
+            variants={textVariants}
+          >
+            <p className="description">It's not what it used to be.</p>
+          </motion.div>
         </section>
       </main>
       <style jsx>{`
@@ -24,17 +46,6 @@ const Future = () => {
           line-height: 1.5;
           font-size: var(--text-medium);
           color: var(--medium);
-        }
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: var(--text-large);
-          color: var(--dark);
-        }
-        .footnote {
-          line-height: 1.5;
-          font-size: var(--text-small);
-          color: var(--light);
         }
         @media (max-width: 600px) {
         }

@@ -6,12 +6,17 @@ export function Header() {
         <ul>
           <li>
             <Link href="/">
-              <a>present</a>
+              <a>index</a>
             </Link>
           </li>
           <li>
-            <Link href="/past">
-              <a>past</a>
+            <Link href="/about">
+              <a>about</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/experience">
+              <a>experience</a>
             </Link>
           </li>
           <li>

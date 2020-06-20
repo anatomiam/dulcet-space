@@ -4,12 +4,12 @@ import { Layout } from "../components/Layout";
 
 class Space extends App {
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
 
     return (
       <Layout theme="dark">
         <AnimatePresence exitBeforeEnter>
-          <Component {...pageProps} />
+          <Component {...pageProps} key={router.route} />
         </AnimatePresence>
       </Layout>
     );
