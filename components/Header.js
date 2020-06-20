@@ -10,8 +10,8 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <Link href="/about">
-              <a>about</a>
+            <Link href="/contact">
+              <a>contact</a>
             </Link>
           </li>
           <li>
@@ -33,8 +33,8 @@ export function Header() {
           font-size: var(--small);
           color: var(--medium);
           position: absolute;
-          left: 0.25rem;
-          top: 0.5rem;
+          left: 3rem;
+          top: 2rem;
         }
         @media (max-width: 600px) {
         }

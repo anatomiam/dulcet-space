@@ -40,6 +40,11 @@ export function Layout(props) {
           list-style-type: none;
         }
 
+        ul {
+          margin: 0;
+          padding: 0;
+        }
+
         * {
           box-sizing: border-box;
         }

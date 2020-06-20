@@ -40,7 +40,7 @@ const Index = () => {
             variants={textVariants}
           >
             <h1 className="title">Hey, I'm Eric.</h1>
-            <h2 className="subtitle">What would you like to know?</h2>
+            <h2 className="subtitle">I design and build websites.</h2>
           </motion.div>
         </section>
       </main>
