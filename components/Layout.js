@@ -49,7 +49,7 @@ export function Layout(props) {
           box-sizing: border-box;
         }
         .container {
-          padding: 5rem 20rem;
+          padding: 7rem 5rem;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -60,6 +60,19 @@ export function Layout(props) {
           display: flex;
           justify-content: center;
           align-items: center;
+        }
+        /* tablets and above breakpoint */
+        @media only screen and (min-width: 768px) {
+          .container {
+            padding: 4rem 12rem;
+          }
+        }
+
+        /* laptops and above breakpoint */
+        @media only screen and (min-width: 1024px) {
+          .container {
+            padding: 5rem 18rem;
+          }
         }
       `}</style>
     </div>
