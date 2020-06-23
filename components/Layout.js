@@ -49,7 +49,7 @@ export function Layout(props) {
           box-sizing: border-box;
         }
         .container {
-          padding: 7rem 5rem;
+          padding: 7rem 2rem;
           display: flex;
           flex-direction: column;
           justify-content: center;

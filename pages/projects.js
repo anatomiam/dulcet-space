@@ -25,7 +25,7 @@ const Future = () => {
   return (
     <div className="container">
       <Head>
-        <title>Future</title>
+        <title>Projects</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -37,7 +37,7 @@ const Future = () => {
             exit="exit"
             variants={textVariants}
           >
-            <p className="description">It's not what it used to be.</p>
+            <p className="description">Coming soon.</p>
           </motion.div>
         </section>
       </main>

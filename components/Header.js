@@ -20,8 +20,8 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <Link href="/future">
-              <a>future</a>
+            <Link href="/projects">
+              <a>projects</a>
             </Link>
           </li>
         </ul>
