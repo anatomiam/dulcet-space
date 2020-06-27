@@ -50,6 +50,7 @@ export function Layout(props) {
         }
         .container {
           padding: 7rem 2rem;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
           justify-content: center;
