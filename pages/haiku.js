@@ -1,8 +1,16 @@
+import * as yup from "yup";
+
 import React, { Component, useState } from "react";
 
+import { Formik } from "formik";
 import Head from "next/head";
 import axios from "axios";
-import { useFormik } from "formik";
+
+const validationSchema = yup.object().shape({
+  line_1: yup.string().required("Required"),
+  line_2: yup.string().required("Required"),
+  line_3: yup.string().required("Required"),
+});
 
 const Input = () => {
   const syllables = [5, 7, 5];
@@ -11,10 +19,6 @@ const Input = () => {
     new_line_2: ".",
     new_line_3: ".",
   });
-
-  const checkSyllables = (lines, num) => {
-    return lines === num;
-  };
 
   const handleKeyUp = (event) => {
     axios
@@ -33,39 +37,6 @@ const Input = () => {
       .catch((error) => {});
   };
 
-  const formik = useFormik({
-    initialValues: {
-      line_1: "An old silent pond",
-      line_2: "A frog jumps into the pond",
-      line_3: "Splash! Silence again",
-    },
-    onSubmit: (values) => {
-      axios
-        .post("/api/haiku/submit", {
-          line_1: values.line_1,
-          line_2: values.line_2,
-          line_3: values.line_3,
-        })
-        .then((response) => {
-          if (
-            response.data[1]
-              .map((line, i) => checkSyllables(line, syllables[i]))
-              .every((x) => x === true)
-          ) {
-            setNewLines({
-              new_line_1: response.data[0][0].join(" "),
-              new_line_2: response.data[0][1].join(" "),
-              new_line_3: response.data[0][2].join(" "),
-            });
-          } else {
-            setNewLines({
-              new_line_1: "Incorrect number of syllables.",
-            });
-          }
-        })
-        .catch((error) => {});
-    },
-  });
   return (
     <div>
       <Head>
@@ -75,36 +46,79 @@ const Input = () => {
 
       <main>
         <div className="haiku-container">
-          <form onSubmit={formik.handleSubmit}>
-            <input
-              autoFocus
-              id="line_1"
-              name="line_1"
-              type="text"
-              onChange={formik.handleChange}
-              onKeyUp={(e) => handleKeyUp(e)}
-              value={formik.values.line_1}
-            />
-            <input
-              id="line_2"
-              name="line_2"
-              type="text"
-              onChange={formik.handleChange}
-              onKeyUp={(e) => handleKeyUp(e)}
-              value={formik.values.line_2}
-            />
-            <input
-              id="line_3"
-              name="line_3"
-              type="text"
-              onChange={formik.handleChange}
-              onKeyUp={(e) => handleKeyUp(e)}
-              value={formik.values.line_3}
-            />
-            <div className="button-container">
-              <button type="submit">Submit</button>
-            </div>
-          </form>
+          <Formik
+            initialValues={{
+              line_1: "An old silent pond",
+              line_2: "A frog jumps into the pond",
+              line_3: "Splash! Silence again",
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              axios
+                .post("/api/haiku/submit", {
+                  line_1: values.line_1,
+                  line_2: values.line_2,
+                  line_3: values.line_3,
+                })
+                .then((response) => {
+                  setNewLines({
+                    new_line_1: response.data[0][0].join(" "),
+                    new_line_2: response.data[0][1].join(" "),
+                    new_line_3: response.data[0][2].join(" "),
+                  });
+                })
+                .catch((error) => {});
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <input
+                  autoFocus
+                  className={`input ${
+                    errors.line_1 && touched.line_1 ? "has-error" : null
+                  }`}
+                  id="line_1"
+                  name="line_1"
+                  type="text"
+                  onChange={handleChange}
+                  onKeyUp={(e) => handleKeyUp(e)}
+                  value={values.line_1}
+                />
+                <input
+                  className={`input ${
+                    errors.line_2 && touched.line_2 ? "has-error" : null
+                  }`}
+                  id="line_2"
+                  name="line_2"
+                  type="text"
+                  onChange={handleChange}
+                  onKeyUp={(e) => handleKeyUp(e)}
+                  value={values.line_2}
+                />
+                <input
+                  className={`input ${
+                    errors.line_3 && touched.line_3 ? "has-error" : null
+                  }`}
+                  id="line_3"
+                  name="line_3"
+                  type="text"
+                  onChange={handleChange}
+                  onKeyUp={(e) => handleKeyUp(e)}
+                  value={values.line_3}
+                />
+                <div className="button-container">
+                  <button type="submit">Submit</button>
+                </div>
+              </form>
+            )}
+          </Formik>
         </div>
         <div className="new-haiku">
           <span>{newLines.new_line_1}</span>
@@ -116,7 +130,7 @@ const Input = () => {
         .haiku-container {
           width: 40vw;
         }
-        input[type="text"] {
+        .input {
           width: 100%;
           display: block;
           background-color: inherit;
@@ -125,10 +139,13 @@ const Input = () => {
           border-bottom: 1px solid var(--dark);
           color: var(--light);
           font-size: 1.5rem;
-          padding: 1rem 1rem 0 1rem;
+          padding: 1.5rem 1rem 0.5rem 1rem;
         }
-        input[type="text"]:focus {
+        .input:focus {
           border-bottom: 2px solid var(--light);
+        }
+        .has-error {
+          border-bottom: 2px solid var(--error);
         }
         .button-container {
           text-align: right;

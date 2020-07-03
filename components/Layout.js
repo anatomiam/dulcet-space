@@ -14,6 +14,7 @@ export function Layout(props) {
           --dark: ${theme === "dark" ? "#485663" : "#98817e"};
           --very-dark: ${theme === "dark" ? "#1d252b" : "#4d413f"};
           --black: ${theme === "dark" ? "#06090d" : "#5c554f"};
+          --error: #CC0103;
 
           --text-very-small: 0.85rem;
           --text-small: 1rem;
