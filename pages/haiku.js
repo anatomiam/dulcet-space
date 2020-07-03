@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 
+import Head from "next/head";
 import axios from "axios";
 import { useFormik } from "formik";
 
@@ -16,14 +17,12 @@ const Input = () => {
   };
 
   const handleKeyUp = (event) => {
-    console.log(event.target);
     axios
       .post("/api/haiku/syllable_count", {
         line: event.target.value,
         name: event.target.name,
       })
       .then((response) => {
-        console.log(response.data);
         setNewLines({
           ...newLines,
           ...{
@@ -31,9 +30,7 @@ const Input = () => {
           },
         });
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const formik = useFormik({
@@ -66,51 +63,92 @@ const Input = () => {
             });
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     },
   });
   return (
-    <div className="container">
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="firstName">Line1</label>
-        <input
-          id="line_1"
-          name="line_1"
-          type="text"
-          onChange={formik.handleChange}
-          // onChange={this.handleChange}
-          onKeyUp={(e) => handleKeyUp(e)}
-          value={formik.values.line_1}
-        />
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          id="line_2"
-          name="line_2"
-          type="text"
-          onChange={formik.handleChange}
-          onKeyUp={(e) => handleKeyUp(e)}
-          value={formik.values.line_2}
-        />
-        <label htmlFor="email">Email Address</label>
-        <input
-          id="line_3"
-          name="line_3"
-          type="text"
-          onChange={formik.handleChange}
-          onKeyUp={(e) => handleKeyUp(e)}
-          value={formik.values.line_3}
-        />
-        <button type="submit">Submit</button>
-      </form>
-      <p>
-        {newLines.new_line_1}
-        <br />
-        {newLines.new_line_2}
-        <br />
-        {newLines.new_line_3}
-      </p>
+    <div>
+      <Head>
+        <title>Parallel Haiku</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main>
+        <div className="haiku-container">
+          <form onSubmit={formik.handleSubmit}>
+            <input
+              autoFocus
+              id="line_1"
+              name="line_1"
+              type="text"
+              onChange={formik.handleChange}
+              onKeyUp={(e) => handleKeyUp(e)}
+              value={formik.values.line_1}
+            />
+            <input
+              id="line_2"
+              name="line_2"
+              type="text"
+              onChange={formik.handleChange}
+              onKeyUp={(e) => handleKeyUp(e)}
+              value={formik.values.line_2}
+            />
+            <input
+              id="line_3"
+              name="line_3"
+              type="text"
+              onChange={formik.handleChange}
+              onKeyUp={(e) => handleKeyUp(e)}
+              value={formik.values.line_3}
+            />
+            <div className="button-container">
+              <button type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+        <div className="new-haiku">
+          <span>{newLines.new_line_1}</span>
+          <span>{newLines.new_line_2}</span>
+          <span>{newLines.new_line_3}</span>
+        </div>
+      </main>
+      <style jsx>{`
+        .haiku-container {
+          width: 40vw;
+        }
+        input[type="text"] {
+          width: 100%;
+          display: block;
+          background-color: inherit;
+          border: none;
+          outline: none;
+          border-bottom: 1px solid var(--dark);
+          color: var(--light);
+          font-size: 1.5rem;
+          padding: 1rem 1rem 0 1rem;
+        }
+        input[type="text"]:focus {
+          border-bottom: 2px solid var(--light);
+        }
+        .button-container {
+          text-align: right;
+        }
+        button[type="submit"] {
+          margin: 15px 0 5px 0;
+          padding: 0.5rem;
+          border: none;
+          border-radius: 5px;
+          background-color: var(--dark);
+          color: var(--light);
+        }
+        span {
+          text-align: center;
+          display: block;
+          line-height: 1.5;
+          font-size: var(--text-medium);
+          color: var(--medium);
+        }
+      `}</style>
     </div>
   );
 };
