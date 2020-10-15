@@ -10,7 +10,7 @@
   "dependencies": {
     "framer-motion": "^1.11.1",
     "next": "9.4.4",
-    "react": "16.13.1",
+    "react": "16.14.0",
     "react-dom": "16.13.1",
     "react-icons": "^3.10.0"
   }
