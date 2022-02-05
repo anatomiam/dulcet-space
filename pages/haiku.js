@@ -13,11 +13,16 @@ const validationSchema = yup.object().shape({
 });
 
 const Input = () => {
-  const syllables = [5, 7, 5];
   const [newLines, setNewLines] = useState({
     new_line_1: ".",
     new_line_2: ".",
     new_line_3: ".",
+  });
+
+  const [syllableCounts, setSyllableCounts] = useState({
+    line_1: 0,
+    line_2: 0,
+    line_3: 0,
   });
 
   const handleKeyUp = (event) => {
@@ -27,10 +32,10 @@ const Input = () => {
         name: event.target.name,
       })
       .then((response) => {
-        setNewLines({
-          ...newLines,
+        setSyllableCounts({
+          ...syllableCounts,
           ...{
-            ["new_" + response.data.name]: response.data.syllables,
+            [response.data.name]: response.data.syllables,
           },
         });
       })
@@ -91,6 +96,7 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_1}
                 />
+                <span>{syllableCounts.line_1}</span>
                 <input
                   className={`input ${
                     errors.line_2 && touched.line_2 ? "has-error" : null
@@ -102,6 +108,7 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_2}
                 />
+                <span>{syllableCounts.line_2}</span>
                 <input
                   className={`input ${
                     errors.line_3 && touched.line_3 ? "has-error" : null
@@ -113,6 +120,7 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_3}
                 />
+                <span>{syllableCounts.line_3}</span>
                 <div className="button-container">
                   <button type="submit">Submit</button>
                 </div>
