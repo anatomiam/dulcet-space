@@ -12,17 +12,21 @@ const Steps = ({ row, rowIndex }) => {
         return (
           <div
             className={`step ${
-              info.step === currentStep.step ? "current" : null
+              info.stepTime.step === currentStep.step ? "current" : null
             } ${currentStep.selected ? "selected" : null}`}
             onClick={() => {
               setters.updateNote({
                 stepnum: currentStep.step,
                 rowIndex,
               });
+              setters.updatePlayNotes({
+                stepnum: currentStep.step,
+                rowIndex,
+              });
             }}
             key={currentStep.id}
           >
-            {currentStep.id}
+            {/* {currentStep.id} */}
           </div>
         );
       })}
@@ -32,10 +36,9 @@ const Steps = ({ row, rowIndex }) => {
           flex-direction: row;
         }
         .step {
-          height: 35px;
-          width: 35px;
-          margin: 10px;
-          border: 2px solid var(--light);
+          height: 20px;
+          width: 20px;
+          border: 1px solid var(--light);
           color: var(--light);
         }
         .current {
@@ -84,11 +87,14 @@ const Rows = () => {
 
 const SeqContext = React.createContext();
 const SeqProvider = ({ children }) => {
-  const [step, setStep] = useState(-1);
+  const [stepTime, setStepTime] = useState({
+    step: -1,
+    time: null,
+    played: false,
+  });
   const [synth, setSynth] = useState();
-  const [time, setTime] = useState();
-  const [notes, setNotes] = useState([]);
-  const [playNotes, setPlayNotes] = useState(false);
+  const [notes, setNotes] = useState({});
+  const [playNotes, setPlayNotes] = useState({});
   const [matrix, setMatrix] = useState([]);
 
   const updateNote = ({ stepnum, rowIndex }) => {
@@ -97,57 +103,84 @@ const SeqProvider = ({ children }) => {
     setMatrix(newM);
   };
 
+  const updatePlayNotes = ({ stepnum, rowIndex }) => {
+    const newP = { ...playNotes };
+
+    if (matrix[rowIndex][stepnum].selected) {
+      newP[stepnum] = new Set([
+        ...newP[stepnum],
+        matrix[rowIndex][stepnum].note,
+      ]);
+    } else if (
+      !matrix[rowIndex][stepnum].selected &&
+      newP[stepnum].has(matrix[rowIndex][stepnum].note)
+    ) {
+      newP[stepnum].delete(matrix[rowIndex][stepnum].note);
+    }
+
+    setPlayNotes(newP);
+  };
+
   // Create the matrix
   useEffect(() => {
-    const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
-    const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7];
+    // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+    const notesarr = [
+      "F#4",
+      "G#4",
+      "A4",
+      "B4",
+      "C#4",
+      "D#4",
+      "E4",
+      "F#5",
+      "G#5",
+      "A5",
+      "B5",
+      "C#5",
+      "D#5",
+      "E5",
+      "F#6",
+    ];
+    const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const matrixArr = notesarr.map((note) => {
       return stepsnum.map((step) => {
         return { note, step, selected: false, id: `${note}-${step}` };
       });
     });
     setMatrix(matrixArr);
+    const playNotesDict = {};
+    stepsnum.forEach((step) => {
+      playNotesDict[step] = [];
+    });
+    setPlayNotes(playNotesDict);
   }, []);
 
   // Set up synth and transport loop
   useEffect(() => {
     setSynth(
-      new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }).toDestination()
+      new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
     );
     let x = 0;
     Tone.Transport.scheduleRepeat((time) => {
-      // use the callback time to schedule events
-      setStep(x);
-      setTime(time);
-      x = (x + 1) % 8;
+      setStepTime({ step: x, time, played: false });
+      x = (x + 1) % 16;
     }, "8n");
   }, []);
 
-  // set notes to play
-  useEffect(() => {
-    if (step >= 0) {
-      console.log("setting notes");
-      const notess = matrix.map((row) => {
-        if (row[step].selected) {
-          return row[step].note;
-        }
-      });
-      setNotes(notess.filter(Boolean));
-      setPlayNotes(true);
-    }
-  }, [step]);
-
   // play notes
   useEffect(() => {
-    if (synth && notes.length && playNotes) {
-      console.log({ notes });
-      synth.triggerAttackRelease(notes, "4n", time);
-      setNotes([]);
-    }
-  }, [playNotes, notes, synth, time]);
+    const notess = playNotes[stepTime.step]
+      ? Array.from(playNotes[stepTime.step])
+      : [];
 
-  const info = { step, synth, time, notes, matrix };
-  const setters = { setStep, setNotes, updateNote };
+    if (synth && notess.length && !stepTime.played) {
+      synth.triggerAttackRelease(notess, "8n", stepTime.time);
+      setStepTime({ ...stepTime, played: true });
+    }
+  }, [synth, playNotes, stepTime.step, stepTime.time, stepTime]);
+
+  const info = { stepTime, synth, notes, matrix };
+  const setters = { setNotes, updateNote, updatePlayNotes };
 
   const value = [info, setters];
 
@@ -157,7 +190,7 @@ const SeqProvider = ({ children }) => {
 const Sequencer = () => {
   const [started, setStarted] = useState(false);
 
-  Tone.Transport.bpm.value = 120;
+  Tone.Transport.bpm.value = 180;
 
   return (
     <div>
@@ -204,7 +237,7 @@ const Wrappa = () => {
             <Sequencer />
           </SeqProvider>
         ) : (
-          <div className="loading">LOADING</div>
+          <h1 className="loading">LOADING</h1>
         )}
       </main>
       <style jsx>{`
