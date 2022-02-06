@@ -12,12 +12,10 @@ const Steps = ({ step, note }) => {
       {steps.map((currentStep) => {
         const [selected, setSelected] = useState(false);
         const [info, setStep] = useContext(SeqContext);
-        // const synth = info.synths[info.step];
         const synth = info.synth;
         useEffect(() => {
           if (step === currentStep && selected) {
-            console.log({ synth });
-            synth.triggerAttackRelease(note, "8n");
+            synth.triggerAttackRelease(note, "4n", info.time);
           }
         }, [step, selected]);
         return (
@@ -27,7 +25,6 @@ const Steps = ({ step, note }) => {
             }`}
             onClick={() => {
               setSelected(!selected);
-              console.log({ selected });
             }}
             key={currentStep}
           ></div>
@@ -118,24 +115,23 @@ const Notes = ({ step }) => {
 const SeqContext = React.createContext();
 const SeqProvider = ({ children }) => {
   const [step, setStep] = useState(-1);
-  const [synths, setSynths] = useState([]);
   const [synth, setSynth] = useState();
-  const notes = [0, 1, 2, 3, 4, 5, 6, 7];
+  const [time, setTime] = useState();
 
   useEffect(() => {
-    console.log("JUST ONCE");
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }).toDestination()
     );
-    setSynths(
-      notes.map((note) => {
-        return new Tone.Synth().toDestination();
-      })
-    );
+    let x = 0;
+    Tone.Transport.scheduleRepeat((time) => {
+      // use the callback time to schedule events
+      setStep(x);
+      setTime(time);
+      x = (x + 1) % 8;
+    }, "8n");
   }, []);
 
-  console.log({ synths });
-  const info = { step, synths, synth };
+  const info = { step, synth, time };
 
   const value = [info, setStep];
 
@@ -144,22 +140,21 @@ const SeqProvider = ({ children }) => {
 
 const Sequencer = () => {
   const [info, setStep] = useContext(SeqContext);
-  Tone.Transport.bpm.value = 80;
+  Tone.Transport.bpm.value = 120;
 
   const [started, setStarted] = useState(false);
+  // const [time, setTime] = useState();
   // const [step, setStep] = useState(0);
 
   useEffect(() => {
-    console.log("SHOULD HAPPEN ONCE");
-    let x = 0;
-    Tone.Transport.scheduleRepeat((time) => {
-      // use the callback time to schedule events
-      console.log({ time });
-      setStep(x);
-      x = (x + 1) % 8;
-    }, "8n");
+    // let x = 0;
+    // Tone.Transport.scheduleRepeat((time) => {
+    //   // use the callback time to schedule events
+    //   setStep(x);
+    //   setTime(time);
+    //   x = (x + 1) % 8;
+    // }, "8n");
   }, []);
-  console.log({ lakjsdlfkajsdf: info.step });
 
   return (
     <div>
@@ -171,10 +166,8 @@ const Sequencer = () => {
           }
           setStarted(!started);
           if (!started) {
-            console.log("starting");
             Tone.Transport.start();
           } else if (started) {
-            console.log("stopping");
             Tone.Transport.stop();
           }
         }}
@@ -210,12 +203,15 @@ const Wrappa = () => {
             <Sequencer />
           </SeqProvider>
         </main>
-        ;
       </div>
     );
   } else {
     return (
       <div>
+        <Head>
+          <title>Sampler</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
         <main>
           <div className="loading">LOADING</div>;
         </main>
