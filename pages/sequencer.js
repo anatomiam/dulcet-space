@@ -4,31 +4,85 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Head from "next/head";
 
-const Steps = ({ step, note }) => {
-  const steps = [0, 1, 2, 3, 4, 5, 6, 7];
+const Steps = ({ row, rowIndex }) => {
+  const rowex = [
+    {
+      note: "C4",
+      step: 0,
+      selected: false,
+      id: "C4-0",
+    },
+    {
+      note: "C4",
+      step: 1,
+      selected: false,
+      id: "C4-1",
+    },
+    {
+      note: "C4",
+      step: 2,
+      selected: false,
+      id: "C4-2",
+    },
+    {
+      note: "C4",
+      step: 3,
+      selected: false,
+      id: "C4-3",
+    },
+    {
+      note: "C4",
+      step: 4,
+      selected: false,
+      id: "C4-4",
+    },
+    {
+      note: "C4",
+      step: 5,
+      selected: false,
+      id: "C4-5",
+    },
+    {
+      note: "C4",
+      step: 6,
+      selected: false,
+      id: "C4-6",
+    },
+    {
+      note: "C4",
+      step: 7,
+      selected: false,
+      id: "C4-7",
+    },
+  ];
 
   return (
     <span className="step-container">
-      {steps.map((currentStep) => {
+      {row.map((currentStep) => {
         const [selected, setSelected] = useState(false);
-        const [info, setStep, setNotes] = useContext(SeqContext);
+        const [info, setters] = useContext(SeqContext);
         const synth = info.synth;
         useEffect(() => {
-          if (step === currentStep && selected) {
+          if (info.step === currentStep.step && currentStep.selected) {
             // synth.triggerAttackRelease(note, "4n", info.time);
-            setNotes([...info.notes, note]);
+            setters.setNotes([...info.notes, currentStep.note]);
           }
-        }, [step, selected]);
+        }, [currentStep.step, currentStep.selected]);
         return (
           <div
-            className={`step ${step === currentStep ? "current" : null} ${
-              selected ? "selected" : null
-            }`}
+            className={`step ${
+              info.step === currentStep.step ? "current" : null
+            } ${currentStep.selected ? "selected" : null}`}
             onClick={() => {
-              setSelected(!selected);
+              setters.updateNote({
+                stepnum: currentStep.step,
+                rowIndex,
+              });
             }}
-            key={currentStep}
-          ></div>
+            key={currentStep.id}
+          >
+            {currentStep.id}
+          </div>
         );
       })}
       <style jsx>{`
@@ -41,6 +95,7 @@ const Steps = ({ step, note }) => {
           width: 35px;
           margin: 10px;
           border: 2px solid var(--light);
+          color: var(--light);
         }
         .current {
           border: 2px solid red;
@@ -60,27 +115,23 @@ const Steps = ({ step, note }) => {
   );
 };
 
-const Notes = ({ step }) => {
-  const notes = [
-    { id: 0, note: "C4" },
-    { id: 1, note: "D4" },
-    { id: 2, note: "E4" },
-    { id: 3, note: "F4" },
-    { id: 4, note: "G4" },
-    { id: 5, note: "A4" },
-    { id: 6, note: "B4" },
-    { id: 7, note: "C5" },
-  ];
+const Notes = () => {
+  // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+  // const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7];
+
+  // const matrix = notesarr.map((note) => {
+  //   return stepsnum.map((step) => {
+  //     return { note, step, selected: false, id: `${note}-${step}` };
+  //   });
+  // });
+  const [info, setters] = useContext(SeqContext);
 
   return (
     <div className="note-container">
-      {notes.map((note) => {
+      {info.matrix.map((row, rowIndex) => {
         return (
-          <span className="note-row" key={note.id}>
-            <span id={note.id} className="note" data-note={note.note}>
-              {note.note}
-            </span>
-            <Steps step={step} note={note.note} />
+          <span className="note-row" key={`note-row-${rowIndex}`}>
+            <Steps row={row} rowIndex={rowIndex} />
           </span>
         );
       })}
@@ -95,17 +146,6 @@ const Notes = ({ step }) => {
           flex-direction: column;
           justify-content: space-between;
         }
-        .note {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 45px;
-          width: 45px;
-          margin: 5px;
-          border-radius: 50%;
-          border: 2px solid var(--light);
-          color: var(--light);
-        }
         @media (max-width: 600px) {
         }
       `}</style>
@@ -119,7 +159,28 @@ const SeqProvider = ({ children }) => {
   const [synth, setSynth] = useState();
   const [time, setTime] = useState();
   const [notes, setNotes] = useState([]);
+  const [playNotes, setPlayNotes] = useState(false);
+  const [matrix, setMatrix] = useState([]);
 
+  const updateNote = ({ stepnum, rowIndex }) => {
+    const newM = matrix.slice();
+    newM[rowIndex][stepnum].selected = !newM[rowIndex][stepnum].selected;
+    setMatrix(newM);
+  };
+
+  // Create the matrix
+  useEffect(() => {
+    const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+    const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7];
+    const matrixArr = notesarr.map((note) => {
+      return stepsnum.map((step) => {
+        return { note, step, selected: false, id: `${note}-${step}` };
+      });
+    });
+    setMatrix(matrixArr);
+  }, []);
+
+  // Set up synth and transport loop
   useEffect(() => {
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }).toDestination()
@@ -133,16 +194,32 @@ const SeqProvider = ({ children }) => {
     }, "8n");
   }, []);
 
+  // set notes to play
   useEffect(() => {
-    if (synth && notes.length) {
+    if (step >= 0) {
+      const notess = matrix.map((row) => {
+        if (row[step].selected) {
+          return row[step].note;
+        }
+      });
+      setNotes(notess.filter(Boolean));
+      setPlayNotes(true);
+    }
+  }, [step]);
+
+  // play notes
+  useEffect(() => {
+    if (synth && notes.length && playNotes) {
+      console.log({ notes });
       synth.triggerAttackRelease(notes, "4n", time);
       setNotes([]);
     }
-  }, [notes]);
+  }, [playNotes, notes]);
 
-  const info = { step, synth, time, notes };
+  const info = { step, synth, time, notes, matrix };
+  const setters = { setStep, setNotes, updateNote };
 
-  const value = [info, setStep, setNotes];
+  const value = [info, setters];
 
   return <SeqContext.Provider value={value}>{children}</SeqContext.Provider>;
 };
