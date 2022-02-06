@@ -12,11 +12,12 @@ const Steps = ({ step, note }) => {
       {steps.map((currentStep) => {
         const [selected, setSelected] = useState(false);
         const [info, setStep] = useContext(SeqContext);
-        const synth = info.synths[info.step];
+        // const synth = info.synths[info.step];
+        const synth = info.synth;
         useEffect(() => {
           if (step === currentStep && selected) {
             console.log({ synth });
-            synth.triggerAttackRelease(note, "4n");
+            synth.triggerAttackRelease(note, "8n");
           }
         }, [step, selected]);
         return (
@@ -118,10 +119,14 @@ const SeqContext = React.createContext();
 const SeqProvider = ({ children }) => {
   const [step, setStep] = useState(-1);
   const [synths, setSynths] = useState([]);
+  const [synth, setSynth] = useState();
   const notes = [0, 1, 2, 3, 4, 5, 6, 7];
 
   useEffect(() => {
     console.log("JUST ONCE");
+    setSynth(
+      new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }).toDestination()
+    );
     setSynths(
       notes.map((note) => {
         return new Tone.Synth().toDestination();
@@ -130,7 +135,7 @@ const SeqProvider = ({ children }) => {
   }, []);
 
   console.log({ synths });
-  const info = { step, synths };
+  const info = { step, synths, synth };
 
   const value = [info, setStep];
 
