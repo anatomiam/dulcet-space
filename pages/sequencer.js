@@ -11,11 +11,12 @@ const Steps = ({ step, note }) => {
     <span className="step-container">
       {steps.map((currentStep) => {
         const [selected, setSelected] = useState(false);
-        const [info, setStep] = useContext(SeqContext);
+        const [info, setStep, setNotes] = useContext(SeqContext);
         const synth = info.synth;
         useEffect(() => {
           if (step === currentStep && selected) {
-            synth.triggerAttackRelease(note, "4n", info.time);
+            // synth.triggerAttackRelease(note, "4n", info.time);
+            setNotes([...info.notes, note]);
           }
         }, [step, selected]);
         return (
@@ -117,6 +118,7 @@ const SeqProvider = ({ children }) => {
   const [step, setStep] = useState(-1);
   const [synth, setSynth] = useState();
   const [time, setTime] = useState();
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     setSynth(
@@ -131,9 +133,16 @@ const SeqProvider = ({ children }) => {
     }, "8n");
   }, []);
 
-  const info = { step, synth, time };
+  useEffect(() => {
+    if (synth && notes.length) {
+      synth.triggerAttackRelease(notes, "4n", time);
+      setNotes([]);
+    }
+  }, [notes]);
 
-  const value = [info, setStep];
+  const info = { step, synth, time, notes };
+
+  const value = [info, setStep, setNotes];
 
   return <SeqContext.Provider value={value}>{children}</SeqContext.Provider>;
 };
