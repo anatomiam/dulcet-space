@@ -113,26 +113,9 @@ const SeqProvider = ({ children }) => {
 };
 
 const Sequencer = () => {
-  const [started, setStarted] = useState(false);
-
   return (
     <div>
-      <h1
-        className="title"
-        onClick={() => {
-          if (!started && Tone.context.state !== "running") {
-            Tone.context.resume();
-          }
-          setStarted(!started);
-          if (!started) {
-            Tone.Transport.start();
-          } else if (started) {
-            Tone.Transport.stop();
-          }
-        }}
-      >
-        {started ? "Started" : "Stopped"}
-      </h1>
+      <h1 className="title">Sequence</h1>
       <Rows />
       <style jsx>{`
         .title {
@@ -225,8 +208,9 @@ const Steps = ({ row, rowIndex }) => {
           flex-direction: row;
         }
         .step {
-          height: 20px;
-          width: 20px;
+          cursor: pointer;
+          height: 25px;
+          width: 25px;
           border: 1px solid var(--light);
           color: var(--light);
         }
@@ -234,8 +218,8 @@ const Steps = ({ row, rowIndex }) => {
           border: 2px solid red;
         }
         .selected {
-          border: 2px solid orange;
-          background-color: orange;
+          border: 1px solid #f45f00;
+          background-color: #f45f00;
         }
 
         .current.selected {
@@ -247,7 +231,33 @@ const Steps = ({ row, rowIndex }) => {
 };
 
 const Controls = () => {
-  return <div>CONTROLS</div>;
+  const [started, setStarted] = useState(false);
+  const [info, setters] = useContext(SeqContext);
+  return (
+    <div>
+      <div className="title">CONTROLS</div>
+      <button
+        onClick={() => {
+          if (!started && Tone.context.state !== "running") {
+            Tone.context.resume();
+          }
+          setStarted(!started);
+          if (!started) {
+            Tone.Transport.start();
+          } else if (started) {
+            Tone.Transport.stop();
+          }
+        }}
+      >
+        {started ? "Stop" : "Start"}
+      </button>
+      <style jsx>{`
+        .title {
+          color: var(--light);
+        }
+      `}</style>
+    </div>
+  );
 };
 
 const Main = () => {
