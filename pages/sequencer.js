@@ -92,11 +92,18 @@ const SeqProvider = ({ children }) => {
 
     initializeMatrix();
 
+    // TODO could I set up a sequence for each note? would they stay in sync?
     let x = 0;
-    Tone.Transport.scheduleRepeat((time) => {
+    const sequence = Tone.Transport.scheduleRepeat((time) => {
       setStepTime({ step: x, time, played: false });
       x = (x + 1) % 16;
     }, "8n");
+
+    return () => {
+      if (sequence !== undefined) {
+        Tone.Transport.clear(sequence);
+      }
+    };
   }, []);
 
   // play notes
