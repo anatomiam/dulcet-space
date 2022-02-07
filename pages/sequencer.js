@@ -16,6 +16,7 @@ const SeqProvider = ({ children }) => {
   const [notes, setNotes] = useState({});
   const [playNotes, setPlayNotes] = useState({});
   const [matrix, setMatrix] = useState([]);
+  const [mouseDown, setMouseDown] = useState(false);
 
   const updateNote = ({ stepnum, rowIndex }) => {
     const newM = matrix.slice();
@@ -81,6 +82,9 @@ const SeqProvider = ({ children }) => {
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
     );
+
+    Tone.Transport.bpm.value = 180;
+
     let x = 0;
     Tone.Transport.scheduleRepeat((time) => {
       setStepTime({ step: x, time, played: false });
@@ -100,8 +104,8 @@ const SeqProvider = ({ children }) => {
     }
   }, [synth, playNotes, stepTime.step, stepTime.time, stepTime]);
 
-  const info = { stepTime, synth, notes, matrix };
-  const setters = { setNotes, updateNote, updatePlayNotes };
+  const info = { stepTime, synth, notes, matrix, mouseDown };
+  const setters = { setNotes, updateNote, updatePlayNotes, setMouseDown };
 
   const value = [info, setters];
 
@@ -110,8 +114,6 @@ const SeqProvider = ({ children }) => {
 
 const Sequencer = () => {
   const [started, setStarted] = useState(false);
-
-  Tone.Transport.bpm.value = 180;
 
   return (
     <div>
@@ -184,7 +186,8 @@ const Steps = ({ row, rowIndex }) => {
         return (
           <div
             className={stepClasses}
-            onClick={() => {
+            onMouseDown={() => {
+              setters.setMouseDown(true);
               setters.updateNote({
                 stepnum: currentStep.step,
                 rowIndex,
@@ -193,6 +196,22 @@ const Steps = ({ row, rowIndex }) => {
                 stepnum: currentStep.step,
                 rowIndex,
               });
+            }}
+            onMouseUp={() => {
+              // TODO needs to work outside of divs as well
+              setters.setMouseDown(false);
+            }}
+            onMouseEnter={(e) => {
+              if (info.mouseDown) {
+                setters.updateNote({
+                  stepnum: currentStep.step,
+                  rowIndex,
+                });
+                setters.updatePlayNotes({
+                  stepnum: currentStep.step,
+                  rowIndex,
+                });
+              }
             }}
             key={currentStep.id}
           >
@@ -227,6 +246,10 @@ const Steps = ({ row, rowIndex }) => {
   );
 };
 
+const Controls = () => {
+  return <div>CONTROLS</div>;
+};
+
 const Main = () => {
   const [loaded, setLoaded] = useState(false);
 
@@ -246,6 +269,7 @@ const Main = () => {
         {loaded ? (
           <SeqProvider>
             <Sequencer />
+            <Controls />
           </SeqProvider>
         ) : (
           <div className="loading">LOADING</div>
