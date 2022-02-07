@@ -30,6 +30,14 @@ const SeqProvider = ({ children }) => {
     setBPM(newBPM);
   };
 
+  const handleMouseDown = () => {
+    setMouseDown(true);
+  };
+
+  const handleMouseUp = () => {
+    setMouseDown(false);
+  };
+
   const updatePlayNotes = ({ stepnum, rowIndex }) => {
     const newP = { ...playNotes };
 
@@ -52,22 +60,22 @@ const SeqProvider = ({ children }) => {
   const initializeMatrix = () => {
     // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
     const notesarr = [
-      "F#3",
-      "G#3",
-      "A3",
-      "B3",
-      "C#4",
-      "D#4",
-      "E4",
-      "F#4",
-      "G#4",
-      "A4",
-      "B4",
-      "C#5",
-      "D#5",
-      "E5",
-      "F#5",
       "G#5",
+      "F#5",
+      "E5",
+      "D#5",
+      "C#5",
+      "B4",
+      "A4",
+      "G#4",
+      "F#4",
+      "E4",
+      "D#4",
+      "C#4",
+      "B3",
+      "A3",
+      "G#3",
+      "F#3",
     ];
     const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const matrixArr = notesarr.map((note) => {
@@ -85,6 +93,9 @@ const SeqProvider = ({ children }) => {
 
   // Set up synth and transport loop and initialize matrix
   useEffect(() => {
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
+
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
     );
@@ -100,6 +111,9 @@ const SeqProvider = ({ children }) => {
     }, "8n");
 
     return () => {
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
+
       if (sequence !== undefined) {
         Tone.Transport.clear(sequence);
       }
@@ -191,7 +205,6 @@ const Steps = ({ row, rowIndex }) => {
           <div
             className={stepClasses}
             onMouseDown={() => {
-              setters.setMouseDown(true);
               setters.updateNote({
                 stepnum: currentStep.step,
                 rowIndex,
@@ -200,10 +213,6 @@ const Steps = ({ row, rowIndex }) => {
                 stepnum: currentStep.step,
                 rowIndex,
               });
-            }}
-            onMouseUp={() => {
-              // TODO needs to work outside of divs as well
-              setters.setMouseDown(false);
             }}
             onMouseEnter={(e) => {
               if (info.mouseDown) {
