@@ -13,6 +13,7 @@ const SeqProvider = ({ children }) => {
     played: false,
   });
   const [synth, setSynth] = useState();
+  const [BPM, setBPM] = useState(180);
   const [notes, setNotes] = useState({});
   const [playNotes, setPlayNotes] = useState({});
   const [matrix, setMatrix] = useState([]);
@@ -22,6 +23,11 @@ const SeqProvider = ({ children }) => {
     const newM = matrix.slice();
     newM[rowIndex][stepnum].selected = !newM[rowIndex][stepnum].selected;
     setMatrix(newM);
+  };
+
+  const updateBPM = (newBPM) => {
+    Tone.Transport.bpm.value = newBPM;
+    setBPM(newBPM);
   };
 
   const updatePlayNotes = ({ stepnum, rowIndex }) => {
@@ -43,7 +49,7 @@ const SeqProvider = ({ children }) => {
   };
 
   // Create the matrix
-  useEffect(() => {
+  const initializeMatrix = () => {
     // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
     const notesarr = [
       "F#3",
@@ -75,15 +81,16 @@ const SeqProvider = ({ children }) => {
       playNotesDict[step] = [];
     });
     setPlayNotes(playNotesDict);
-  }, []);
+  };
 
-  // Set up synth and transport loop
+  // Set up synth and transport loop and initialize matrix
   useEffect(() => {
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
     );
-
     Tone.Transport.bpm.value = 180;
+
+    initializeMatrix();
 
     let x = 0;
     Tone.Transport.scheduleRepeat((time) => {
@@ -104,8 +111,15 @@ const SeqProvider = ({ children }) => {
     }
   }, [synth, playNotes, stepTime.step, stepTime.time, stepTime]);
 
-  const info = { stepTime, synth, notes, matrix, mouseDown };
-  const setters = { setNotes, updateNote, updatePlayNotes, setMouseDown };
+  const info = { stepTime, synth, notes, matrix, mouseDown, BPM };
+  const setters = {
+    setNotes,
+    updateNote,
+    updatePlayNotes,
+    setMouseDown,
+    initializeMatrix,
+    updateBPM,
+  };
 
   const value = [info, setters];
 
@@ -214,6 +228,10 @@ const Steps = ({ row, rowIndex }) => {
           border: 1px solid var(--light);
           color: var(--light);
         }
+        .step:hover {
+          border: 3px solid var(--light);
+          transform: scale(1.25);
+        }
         .current {
           border: 2px solid red;
         }
@@ -221,7 +239,6 @@ const Steps = ({ row, rowIndex }) => {
           border: 1px solid #f45f00;
           background-color: #f45f00;
         }
-
         .current.selected {
           transform: scale(1.25);
         }
@@ -238,6 +255,7 @@ const Controls = () => {
       <div className="title">CONTROLS</div>
       <button
         onClick={() => {
+          // TODO move to Context
           if (!started && Tone.context.state !== "running") {
             Tone.context.resume();
           }
@@ -251,8 +269,29 @@ const Controls = () => {
       >
         {started ? "Stop" : "Start"}
       </button>
+      <button
+        onClick={() => {
+          setters.initializeMatrix();
+        }}
+      >
+        Reset Notes
+      </button>
+      <span>
+        <label htmlFor="bpm">BPM: </label>
+        <input
+          type="number"
+          name="bpm"
+          value={info.BPM}
+          onChange={(e) => {
+            setters.updateBPM(e.target.value);
+          }}
+        />
+      </span>
       <style jsx>{`
         .title {
+          color: var(--light);
+        }
+        label {
           color: var(--light);
         }
       `}</style>
