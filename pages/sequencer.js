@@ -4,88 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Head from "next/head";
 
-const Steps = ({ row, rowIndex }) => {
-  const [info, setters] = useContext(SeqContext);
-  return (
-    <span className="step-container">
-      {row.map((currentStep) => {
-        return (
-          <div
-            className={`step ${
-              info.stepTime.step === currentStep.step ? "current" : null
-            } ${currentStep.selected ? "selected" : null}`}
-            onClick={() => {
-              setters.updateNote({
-                stepnum: currentStep.step,
-                rowIndex,
-              });
-              setters.updatePlayNotes({
-                stepnum: currentStep.step,
-                rowIndex,
-              });
-            }}
-            key={currentStep.id}
-          >
-            {/* {currentStep.id} */}
-          </div>
-        );
-      })}
-      <style jsx>{`
-        .step-container {
-          display: flex;
-          flex-direction: row;
-        }
-        .step {
-          height: 20px;
-          width: 20px;
-          border: 1px solid var(--light);
-          color: var(--light);
-        }
-        .current {
-          border: 2px solid red;
-        }
-        .selected {
-          border: 2px solid orange;
-          background-color: orange;
-        }
-
-        .current.selected {
-          transform: scale(1.25);
-        }
-      `}</style>
-    </span>
-  );
-};
-
-const Rows = () => {
-  const [info] = useContext(SeqContext);
-
-  return (
-    <div className="row-container">
-      {info.matrix.map((row, rowIndex) => {
-        return (
-          <span className="row" key={`row-${rowIndex}`}>
-            <Steps row={row} rowIndex={rowIndex} />
-          </span>
-        );
-      })}
-      <style jsx>{`
-        .row-container {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-        .row {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        }
-      `}</style>
-    </div>
-  );
-};
-
 const SeqContext = React.createContext();
+
 const SeqProvider = ({ children }) => {
   const [stepTime, setStepTime] = useState({
     step: -1,
@@ -125,21 +45,22 @@ const SeqProvider = ({ children }) => {
   useEffect(() => {
     // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
     const notesarr = [
+      "F#3",
+      "G#3",
+      "A3",
+      "B3",
+      "C#4",
+      "D#4",
+      "E4",
       "F#4",
       "G#4",
       "A4",
       "B4",
-      "C#4",
-      "D#4",
-      "E4",
-      "F#5",
-      "G#5",
-      "A5",
-      "B5",
       "C#5",
       "D#5",
       "E5",
-      "F#6",
+      "F#5",
+      "G#5",
     ];
     const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const matrixArr = notesarr.map((note) => {
@@ -223,8 +144,98 @@ const Sequencer = () => {
   );
 };
 
-const Wrappa = () => {
-  const windowLoaded = typeof window !== "undefined";
+const Rows = () => {
+  const [info] = useContext(SeqContext);
+
+  return (
+    <div className="row-container">
+      {info.matrix.map((row, rowIndex) => {
+        return (
+          <span className="row" key={`row-${rowIndex}`}>
+            <Steps row={row} rowIndex={rowIndex} />
+          </span>
+        );
+      })}
+      <style jsx>{`
+        .row-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .row {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const Steps = ({ row, rowIndex }) => {
+  const [info, setters] = useContext(SeqContext);
+  return (
+    <span className="step-container">
+      {row.map((currentStep) => {
+        const stepClasses = `step ${
+          info.stepTime.step === currentStep.step ? "current" : null
+        } ${currentStep.selected ? "selected" : null}`;
+
+        return (
+          <div
+            className={stepClasses}
+            onClick={() => {
+              setters.updateNote({
+                stepnum: currentStep.step,
+                rowIndex,
+              });
+              setters.updatePlayNotes({
+                stepnum: currentStep.step,
+                rowIndex,
+              });
+            }}
+            key={currentStep.id}
+          >
+            {/* {currentStep.note} */}
+          </div>
+        );
+      })}
+      <style jsx>{`
+        .step-container {
+          display: flex;
+          flex-direction: row;
+        }
+        .step {
+          height: 20px;
+          width: 20px;
+          border: 1px solid var(--light);
+          color: var(--light);
+        }
+        .current {
+          border: 2px solid red;
+        }
+        .selected {
+          border: 2px solid orange;
+          background-color: orange;
+        }
+
+        .current.selected {
+          transform: scale(1.25);
+        }
+      `}</style>
+    </span>
+  );
+};
+
+const Main = () => {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setLoaded(true);
+    }
+  }, []);
+
   return (
     <div>
       <Head>
@@ -232,12 +243,12 @@ const Wrappa = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {windowLoaded ? (
+        {loaded ? (
           <SeqProvider>
             <Sequencer />
           </SeqProvider>
         ) : (
-          <h1 className="loading">LOADING</h1>
+          <div className="loading">LOADING</div>
         )}
       </main>
       <style jsx>{`
@@ -250,4 +261,4 @@ const Wrappa = () => {
     </div>
   );
 };
-export default Wrappa;
+export default Main;
