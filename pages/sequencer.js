@@ -42,6 +42,7 @@ const SeqProvider = ({ children }) => {
   const [mouseDown, setMouseDown] = useState(false);
   const [matrixNotes, setMatrixNotes] = useState(key.cMajor);
   const [started, setStarted] = useState(false);
+  const [synthVolume, setSynthVolume] = useState(0);
 
   const updateNote = ({ stepnum, rowIndex }) => {
     const newM = matrix.slice();
@@ -69,6 +70,11 @@ const SeqProvider = ({ children }) => {
   const updateBPM = (newBPM) => {
     Tone.Transport.bpm.value = newBPM;
     setBPM(newBPM);
+  };
+
+  const updateSynthVolume = (volume) => {
+    synth.volume.value = volume;
+    setSynthVolume(volume);
   };
 
   const handleMouseDown = () => {
@@ -171,13 +177,13 @@ const SeqProvider = ({ children }) => {
 
   const info = {
     stepTime,
-    synth,
     notes,
     matrix,
     mouseDown,
     BPM,
     matrixNotes,
     started,
+    synthVolume,
   };
   const setters = {
     setNotes,
@@ -189,6 +195,7 @@ const SeqProvider = ({ children }) => {
     setMatrixNotes,
     startTransport,
     stopTransport,
+    updateSynthVolume,
   };
 
   const value = [info, setters];
@@ -367,6 +374,17 @@ const Controls = () => {
           value={info.BPM}
           onChange={(e) => {
             setters.updateBPM(e.target.value);
+          }}
+        />
+      </div>
+      <div>
+        <label htmlFor="volume">Volume: </label>
+        <input
+          type="number"
+          name="volume"
+          value={info.synthVolume}
+          onChange={(e) => {
+            setters.updateSynthVolume(e.target.value);
           }}
         />
       </div>

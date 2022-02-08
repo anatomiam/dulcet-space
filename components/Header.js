@@ -28,18 +28,12 @@ export function Header() {
       </nav>
 
       <style jsx>{`
-        .navigation-list {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
+        .navigation-list { }
         .navigation-menu {
-          width: 100vw;
           line-height: 1.5;
           font-size: var(--small);
           color: var(--medium);
           position: absolute;
-          padding-right: 3rem;
           left: 3rem;
           top: 2rem;
         }

@@ -26,6 +26,7 @@ const Input = () => {
   });
 
   const handleKeyUp = (event) => {
+    // TODO debounce this
     axios
       .post("/api/haiku/syllable_count", {
         line: event.target.value,
