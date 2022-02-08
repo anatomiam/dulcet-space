@@ -6,23 +6,64 @@ import Head from "next/head";
 
 const SeqContext = React.createContext();
 
+const key = {
+  cMajor: ["C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"],
+  gSharpDorian: [
+    "G#5",
+    "F#5",
+    "E5",
+    "D#5",
+    "C#5",
+    "B4",
+    "A4",
+    "G#4",
+    "F#4",
+    "E4",
+    "D#4",
+    "C#4",
+    "B3",
+    "A3",
+    "G#3",
+    "F#3",
+  ],
+};
+
 const SeqProvider = ({ children }) => {
   const [stepTime, setStepTime] = useState({
     step: -1,
     time: null,
     played: false,
   });
-  const [synth, setSynth] = useState();
+  const [synth, setSynth] = useState(null);
   const [BPM, setBPM] = useState(180);
   const [notes, setNotes] = useState({});
   const [playNotes, setPlayNotes] = useState({});
   const [matrix, setMatrix] = useState([]);
   const [mouseDown, setMouseDown] = useState(false);
+  const [matrixNotes, setMatrixNotes] = useState(key.cMajor);
+  const [started, setStarted] = useState(false);
 
   const updateNote = ({ stepnum, rowIndex }) => {
     const newM = matrix.slice();
     newM[rowIndex][stepnum].selected = !newM[rowIndex][stepnum].selected;
     setMatrix(newM);
+  };
+
+  const startTransport = () => {
+    if (Tone.context.state !== "running") {
+      Tone.context.resume();
+    }
+    setStarted(true);
+    Tone.Transport.start();
+  };
+
+  const stopTransport = () => {
+    setStarted(false);
+    Tone.Transport.stop();
+  };
+
+  const clearSequence = (id) => {
+    Tone.Transport.clear(id);
   };
 
   const updateBPM = (newBPM) => {
@@ -42,11 +83,13 @@ const SeqProvider = ({ children }) => {
     const newP = { ...playNotes };
 
     if (matrix[rowIndex][stepnum].selected) {
+      // if note is selected, add it to the set of notes to be played for that step
       newP[stepnum] = new Set([
         ...newP[stepnum],
         matrix[rowIndex][stepnum].note,
       ]);
     } else if (
+      // if note is note selected and note is already in set to play, remove it from set
       !matrix[rowIndex][stepnum].selected &&
       newP[stepnum].has(matrix[rowIndex][stepnum].note)
     ) {
@@ -57,27 +100,8 @@ const SeqProvider = ({ children }) => {
   };
 
   // Create the matrix
-  const initializeMatrix = () => {
-    // const notesarr = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
-    const notesarr = [
-      "G#5",
-      "F#5",
-      "E5",
-      "D#5",
-      "C#5",
-      "B4",
-      "A4",
-      "G#4",
-      "F#4",
-      "E4",
-      "D#4",
-      "C#4",
-      "B3",
-      "A3",
-      "G#3",
-      "F#3",
-    ];
-    const stepsnum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  const initializeMatrix = (notesarr) => {
+    const stepsnum = [...Array(notesarr.length).keys()];
     const matrixArr = notesarr.map((note) => {
       return stepsnum.map((step) => {
         return { note, step, selected: false, id: `${note}-${step}` };
@@ -89,36 +113,49 @@ const SeqProvider = ({ children }) => {
       playNotesDict[step] = [];
     });
     setPlayNotes(playNotesDict);
+
+    return notesarr.length;
   };
 
-  // Set up synth and transport loop and initialize matrix
   useEffect(() => {
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
 
-    setSynth(
-      new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
-    );
-    Tone.Transport.bpm.value = 180;
-
-    initializeMatrix();
-
-    // TODO could I set up a sequence for each note? would they stay in sync?
-    let x = 0;
-    const sequence = Tone.Transport.scheduleRepeat((time) => {
-      setStepTime({ step: x, time, played: false });
-      x = (x + 1) % 16;
-    }, "8n");
-
     return () => {
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
-
-      if (sequence !== undefined) {
-        Tone.Transport.clear(sequence);
-      }
     };
   }, []);
+
+  // Set up synth and transport loop and initialize matrix
+  useEffect(() => {
+    stopTransport();
+    setStepTime({
+      step: -1,
+      time: null,
+      played: false,
+    });
+    setSynth(
+      new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
+    );
+    updateBPM(180);
+
+    const sequencelength = initializeMatrix(matrixNotes);
+
+    // TODO could I set up a sequence for each note? would they stay in sync?
+    // OR use modulus on each step
+    let x = 0;
+    const sequence = Tone.Transport.scheduleRepeat((time) => {
+      setStepTime({ step: x, time, played: false });
+      x = (x + 1) % sequencelength;
+    }, "8n");
+
+    return () => {
+      if (sequence !== undefined) {
+        clearSequence(sequence);
+      }
+    };
+  }, [matrixNotes]);
 
   // play notes
   useEffect(() => {
@@ -132,7 +169,16 @@ const SeqProvider = ({ children }) => {
     }
   }, [synth, playNotes, stepTime.step, stepTime.time, stepTime]);
 
-  const info = { stepTime, synth, notes, matrix, mouseDown, BPM };
+  const info = {
+    stepTime,
+    synth,
+    notes,
+    matrix,
+    mouseDown,
+    BPM,
+    matrixNotes,
+    started,
+  };
   const setters = {
     setNotes,
     updateNote,
@@ -140,6 +186,9 @@ const SeqProvider = ({ children }) => {
     setMouseDown,
     initializeMatrix,
     updateBPM,
+    setMatrixNotes,
+    startTransport,
+    stopTransport,
   };
 
   const value = [info, setters];
@@ -264,35 +313,53 @@ const Steps = ({ row, rowIndex }) => {
 };
 
 const Controls = () => {
-  const [started, setStarted] = useState(false);
   const [info, setters] = useContext(SeqContext);
+  const keyKeys = Object.keys(key);
   return (
     <div>
       <div className="title">CONTROLS</div>
-      <button
-        onClick={() => {
-          // TODO move to Context
-          if (!started && Tone.context.state !== "running") {
-            Tone.context.resume();
-          }
-          setStarted(!started);
-          if (!started) {
-            Tone.Transport.start();
-          } else if (started) {
-            Tone.Transport.stop();
-          }
-        }}
-      >
-        {started ? "Stop" : "Start"}
-      </button>
-      <button
-        onClick={() => {
-          setters.initializeMatrix();
-        }}
-      >
-        Reset Notes
-      </button>
-      <span>
+      <div>
+        <button
+          onClick={() => {
+            if (!info.started) {
+              setters.startTransport();
+            } else if (info.started) {
+              setters.stopTransport();
+            }
+          }}
+        >
+          {info.started ? "Stop" : "Start"}
+        </button>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            setters.initializeMatrix(info.matrixNotes);
+          }}
+        >
+          Reset Notes
+        </button>
+      </div>
+
+      <div>
+        <label htmlFor="key-select">
+          Key:
+          <select
+            name="key-select"
+            value={info.matrixNotes.name}
+            onChange={(e) => {
+              setters.setMatrixNotes(key[e.target.value]);
+            }}
+          >
+            {keyKeys.map((keyy) => (
+              <option value={keyy} key={keyy}>
+                {keyy}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div>
         <label htmlFor="bpm">BPM: </label>
         <input
           type="number"
@@ -302,7 +369,7 @@ const Controls = () => {
             setters.updateBPM(e.target.value);
           }}
         />
-      </span>
+      </div>
       <style jsx>{`
         .title {
           color: var(--light);
