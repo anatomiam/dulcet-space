@@ -4,10 +4,38 @@ import React, { useContext, useEffect, useState } from "react";
 
 import Head from "next/head";
 
+/**
+ *
+ * TODO figure out what state values can be stored in component state vs global to prevent unnecessary renders
+ * All Tone/Synth functions should be made in the provider though
+ *
+ *
+ * TODO could I set up a sequence for each note? would they stay in sync?
+ * OR use modulus on each step
+ *
+ */
+
 const SeqContext = React.createContext();
 
 const key = {
-  cMajor: ["C5", "B4", "A4", "G4", "F4", "E4", "D4", "C4"],
+  cMajor: [
+    "C5",
+    "B4",
+    "A4",
+    "G4",
+    "F4",
+    "E4",
+    "D4",
+    "C4",
+    "B3",
+    "A3",
+    "G3",
+    "F3",
+    "E3",
+    "D3",
+    "C3",
+    "B2",
+  ],
   gSharpDorian: [
     "G#5",
     "F#5",
@@ -26,6 +54,24 @@ const key = {
     "G#3",
     "F#3",
   ],
+  pentatonic: [
+    "A6",
+    "G6",
+    "F6",
+    "D6",
+    "B#5",
+    "A5",
+    "G5",
+    "F5",
+    "D5",
+    "B#4",
+    "A4",
+    "G4",
+    "F4",
+    "D4",
+    "B#3",
+    "A3",
+  ],
 };
 
 const SeqProvider = ({ children }) => {
@@ -42,7 +88,6 @@ const SeqProvider = ({ children }) => {
   const [mouseDown, setMouseDown] = useState(false);
   const [matrixNotes, setMatrixNotes] = useState(key.cMajor);
   const [started, setStarted] = useState(false);
-  const [synthVolume, setSynthVolume] = useState(0);
 
   const updateNote = ({ stepnum, rowIndex }) => {
     const newM = matrix.slice();
@@ -74,7 +119,6 @@ const SeqProvider = ({ children }) => {
 
   const updateSynthVolume = (volume) => {
     synth.volume.value = volume;
-    setSynthVolume(volume);
   };
 
   const handleMouseDown = () => {
@@ -108,12 +152,16 @@ const SeqProvider = ({ children }) => {
   // Create the matrix
   const initializeMatrix = (notesarr) => {
     const stepsnum = [...Array(notesarr.length).keys()];
+
+    // creates 2d array, each entry holds it's own state, e.g. note, selected
     const matrixArr = notesarr.map((note) => {
       return stepsnum.map((step) => {
         return { note, step, selected: false, id: `${note}-${step}` };
       });
     });
     setMatrix(matrixArr);
+
+    // sets up a dict that will contain an array of notes to play for each step
     const playNotesDict = {};
     stepsnum.forEach((step) => {
       playNotesDict[step] = [];
@@ -148,8 +196,7 @@ const SeqProvider = ({ children }) => {
 
     const sequencelength = initializeMatrix(matrixNotes);
 
-    // TODO could I set up a sequence for each note? would they stay in sync?
-    // OR use modulus on each step
+    // this is the looper
     let x = 0;
     const sequence = Tone.Transport.scheduleRepeat((time) => {
       setStepTime({ step: x, time, played: false });
@@ -171,6 +218,7 @@ const SeqProvider = ({ children }) => {
 
     if (synth && notess.length && !stepTime.played) {
       synth.triggerAttackRelease(notess, "8n", stepTime.time);
+      // setting played = true here prevents extra notes getting triggered when selecting while playing
       setStepTime({ ...stepTime, played: true });
     }
   }, [synth, playNotes, stepTime.step, stepTime.time, stepTime]);
@@ -183,7 +231,6 @@ const SeqProvider = ({ children }) => {
     BPM,
     matrixNotes,
     started,
-    synthVolume,
   };
   const setters = {
     setNotes,
@@ -322,6 +369,7 @@ const Steps = ({ row, rowIndex }) => {
 const Controls = () => {
   const [info, setters] = useContext(SeqContext);
   const keyKeys = Object.keys(key);
+  const [synthVolume, setSynthVolume] = useState(-5);
   return (
     <div>
       <div className="title">CONTROLS</div>
@@ -378,13 +426,15 @@ const Controls = () => {
         />
       </div>
       <div>
-        <label htmlFor="volume">Volume: </label>
+        <label htmlFor="volume-slider">Volume: </label>
         <input
-          type="number"
-          name="volume"
-          value={info.synthVolume}
+          type="range"
+          min="-20"
+          max="20"
+          value={synthVolume}
           onChange={(e) => {
             setters.updateSynthVolume(e.target.value);
+            setSynthVolume(e.target.value);
           }}
         />
       </div>
