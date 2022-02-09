@@ -14,6 +14,7 @@ export const Steps = ({ row, rowIndex }) => {
         return (
           <div
             className={stepClasses}
+            key={currentStep.id}
             onMouseDown={() => {
               dispatch({
                 type: "UPDATE_STEP",
@@ -48,7 +49,6 @@ export const Steps = ({ row, rowIndex }) => {
                 });
               }
             }}
-            key={currentStep.id}
           >
             {/* {currentStep.note} */}
           </div>
@@ -61,14 +61,16 @@ export const Steps = ({ row, rowIndex }) => {
         }
         .step {
           cursor: pointer;
-          height: 25px;
-          width: 25px;
+          height: 20px;
+          width: 20px;
+          margin: 3px;
           border: 1px solid var(--light);
           color: var(--light);
+          font-size: var(--text-very-small);
         }
         .step:hover {
-          border: 3px solid var(--light);
-          transform: scale(1.25);
+          transform: scale(1.3);
+          border: 2px solid purple;
         }
         .current {
           border: 2px solid red;
