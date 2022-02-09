@@ -1,6 +1,7 @@
 import * as Tone from "tone";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
+import { init, reducer } from "./reducer";
 
 import { key } from "./constants";
 
@@ -14,18 +15,12 @@ export const SeqProvider = ({ children }) => {
   });
   const [synth, setSynth] = useState(null);
   const [BPM, setBPM] = useState(180);
-  const [notes, setNotes] = useState({});
-  const [playNotes, setPlayNotes] = useState({});
-  const [matrix, setMatrix] = useState([]);
   const [mouseDown, setMouseDown] = useState(false);
   const [matrixNotes, setMatrixNotes] = useState(key.cMajor);
   const [started, setStarted] = useState(false);
 
-  const updateNote = ({ stepnum, rowIndex }) => {
-    const newM = matrix.slice();
-    newM[rowIndex][stepnum].selected = !newM[rowIndex][stepnum].selected;
-    setMatrix(newM);
-  };
+  const [state, dispatch] = useReducer(reducer, matrixNotes, init);
+  const { matrix, playNotes } = state;
 
   const startTransport = () => {
     if (Tone.context.state !== "running") {
@@ -61,48 +56,6 @@ export const SeqProvider = ({ children }) => {
     setMouseDown(false);
   };
 
-  const updatePlayNotes = ({ stepnum, rowIndex }) => {
-    const newP = { ...playNotes };
-
-    if (matrix[rowIndex][stepnum].selected) {
-      // if note is selected, add it to the set of notes to be played for that step
-      newP[stepnum] = new Set([
-        ...newP[stepnum],
-        matrix[rowIndex][stepnum].note,
-      ]);
-    } else if (
-      // if note is note selected and note is already in set to play, remove it from set
-      !matrix[rowIndex][stepnum].selected &&
-      newP[stepnum].has(matrix[rowIndex][stepnum].note)
-    ) {
-      newP[stepnum].delete(matrix[rowIndex][stepnum].note);
-    }
-
-    setPlayNotes(newP);
-  };
-
-  // Create the matrix
-  const initializeMatrix = (notesarr) => {
-    const stepsnum = [...Array(notesarr.length).keys()];
-
-    // creates 2d array, each entry holds it's own state, e.g. note, selected
-    const matrixArr = notesarr.map((note) => {
-      return stepsnum.map((step) => {
-        return { note, step, selected: false, id: `${note}-${step}` };
-      });
-    });
-    setMatrix(matrixArr);
-
-    // sets up a dict that will contain an array of notes to play for each step
-    const playNotesDict = {};
-    stepsnum.forEach((step) => {
-      playNotesDict[step] = [];
-    });
-    setPlayNotes(playNotesDict);
-
-    return notesarr.length;
-  };
-
   useEffect(() => {
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
@@ -113,7 +66,7 @@ export const SeqProvider = ({ children }) => {
     };
   }, []);
 
-  // Set up synth and transport loop and initialize matrix
+  // Set up synth and transport loop
   useEffect(() => {
     stopTransport();
     setStepTime({
@@ -121,18 +74,17 @@ export const SeqProvider = ({ children }) => {
       time: null,
       played: false,
     });
+    // TODO why isn't maxPolyphony working
     setSynth(
       new Tone.PolySynth(Tone.Synth, { maxPolyphony: 4 }).toDestination()
     );
     updateBPM(180);
 
-    const sequencelength = initializeMatrix(matrixNotes);
-
     // this is the looper
     let x = 0;
     const sequence = Tone.Transport.scheduleRepeat((time) => {
       setStepTime({ step: x, time, played: false });
-      x = (x + 1) % sequencelength;
+      x = (x + 1) % matrixNotes.length;
     }, "8n");
 
     return () => {
@@ -144,12 +96,12 @@ export const SeqProvider = ({ children }) => {
 
   // play notes
   useEffect(() => {
-    const notess = playNotes[stepTime.step]
+    const playNotesArray = playNotes[stepTime.step]
       ? Array.from(playNotes[stepTime.step])
       : [];
 
-    if (synth && notess.length && !stepTime.played) {
-      synth.triggerAttackRelease(notess, "8n", stepTime.time);
+    if (synth && playNotesArray.length && !stepTime.played) {
+      synth.triggerAttackRelease(playNotesArray, "8n", stepTime.time);
       // setting played = true here prevents extra notes getting triggered when selecting while playing
       setStepTime({ ...stepTime, played: true });
     }
@@ -157,19 +109,13 @@ export const SeqProvider = ({ children }) => {
 
   const info = {
     stepTime,
-    notes,
     matrix,
     mouseDown,
     BPM,
     matrixNotes,
     started,
   };
-  const setters = {
-    setNotes,
-    updateNote,
-    updatePlayNotes,
-    setMouseDown,
-    initializeMatrix,
+  const func = {
     updateBPM,
     setMatrixNotes,
     startTransport,
@@ -177,7 +123,7 @@ export const SeqProvider = ({ children }) => {
     updateSynthVolume,
   };
 
-  const value = [info, setters];
+  const value = [info, func, dispatch];
 
   return <SeqContext.Provider value={value}>{children}</SeqContext.Provider>;
 };

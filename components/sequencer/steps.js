@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { SeqContext } from "./provider";
 
 export const Steps = ({ row, rowIndex }) => {
-  const [info, setters] = useContext(SeqContext);
+  const [info, func, dispatch] = useContext(SeqContext);
   return (
     <span className="step-container">
       {row.map((currentStep) => {
@@ -15,24 +15,36 @@ export const Steps = ({ row, rowIndex }) => {
           <div
             className={stepClasses}
             onMouseDown={() => {
-              setters.updateNote({
-                stepnum: currentStep.step,
-                rowIndex,
+              dispatch({
+                type: "UPDATE_STEP",
+                payload: {
+                  stepnum: currentStep.step,
+                  rowIndex,
+                },
               });
-              setters.updatePlayNotes({
-                stepnum: currentStep.step,
-                rowIndex,
+              dispatch({
+                type: "UPDATE_NOTE",
+                payload: {
+                  stepnum: currentStep.step,
+                  rowIndex,
+                },
               });
             }}
-            onMouseEnter={(e) => {
+            onMouseEnter={() => {
               if (info.mouseDown) {
-                setters.updateNote({
-                  stepnum: currentStep.step,
-                  rowIndex,
+                dispatch({
+                  type: "UPDATE_STEP",
+                  payload: {
+                    stepnum: currentStep.step,
+                    rowIndex,
+                  },
                 });
-                setters.updatePlayNotes({
-                  stepnum: currentStep.step,
-                  rowIndex,
+                dispatch({
+                  type: "UPDATE_NOTE",
+                  payload: {
+                    stepnum: currentStep.step,
+                    rowIndex,
+                  },
                 });
               }
             }}

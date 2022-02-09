@@ -2,10 +2,11 @@ import React, { useContext, useState } from "react";
 
 import { SeqContext } from "./provider";
 import { key } from "./constants";
+import { setters } from "pos/lexicon";
 
 export const Controls = () => {
-  const [info, setters] = useContext(SeqContext);
-  const keyKeys = Object.keys(key);
+  const [info, func, dispatch] = useContext(SeqContext);
+  const keyNames = Object.keys(key);
   const [synthVolume, setSynthVolume] = useState(-5);
   return (
     <div>
@@ -14,9 +15,9 @@ export const Controls = () => {
         <button
           onClick={() => {
             if (!info.started) {
-              setters.startTransport();
+              func.startTransport();
             } else if (info.started) {
-              setters.stopTransport();
+              func.stopTransport();
             }
           }}
         >
@@ -26,7 +27,7 @@ export const Controls = () => {
       <div>
         <button
           onClick={() => {
-            setters.initializeMatrix(info.matrixNotes);
+            dispatch({ type: "INITIALIZE", payload: info.matrixNotes });
           }}
         >
           Reset Notes
@@ -40,12 +41,14 @@ export const Controls = () => {
             name="key-select"
             value={info.matrixNotes.name}
             onChange={(e) => {
-              setters.setMatrixNotes(key[e.target.value]);
+              // triggers useEffect that resets the looper
+              func.setMatrixNotes(key[e.target.value]);
+              dispatch({ type: "INITIALIZE", payload: key[e.target.value] });
             }}
           >
-            {keyKeys.map((keyy) => (
-              <option value={keyy} key={keyy}>
-                {keyy}
+            {keyNames.map((keyName) => (
+              <option value={keyName} key={keyName}>
+                {keyName}
               </option>
             ))}
           </select>
@@ -58,7 +61,7 @@ export const Controls = () => {
           name="bpm"
           value={info.BPM}
           onChange={(e) => {
-            setters.updateBPM(e.target.value);
+            func.updateBPM(e.target.value);
           }}
         />
       </div>
@@ -70,7 +73,7 @@ export const Controls = () => {
           max="20"
           value={synthVolume}
           onChange={(e) => {
-            setters.updateSynthVolume(e.target.value);
+            func.updateSynthVolume(e.target.value);
             setSynthVolume(e.target.value);
           }}
         />

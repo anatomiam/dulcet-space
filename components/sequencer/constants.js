@@ -53,4 +53,5 @@ export const key = {
     "B#3",
     "A3",
   ],
+  pentaish: ["A6", "G6", "G4", "F4", "D4", "B#3", "A3"],
 };
