@@ -49,7 +49,8 @@ const Contact = () => {
                 <a
                   className="link"
                   href="https://www.linkedin.com/in/ericdulcet"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaLinkedinIn />
                   <span className="link-text">Linkedin</span>
@@ -59,7 +60,8 @@ const Contact = () => {
                 <a
                   className="link"
                   href="https://github.com/anatomiam"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaGithub />
                   <span className="link-text">Github</span>
@@ -69,7 +71,8 @@ const Contact = () => {
                 <a
                   className="link"
                   href="https://www.instagram.com/dulce1et"
-                  target="_blank" rel="noreferrer"
+                  target="_blank"
+                  rel="noreferrer"
                 >
                   <FaInstagram />
                   <span className="link-text">Instagram</span>

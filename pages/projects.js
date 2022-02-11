@@ -49,6 +49,15 @@ const Future = () => {
                   <a>sequencer</a>
                 </Link>
               </li>
+              <li>
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.knobnotes.app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  knob notes
+                </a>
+              </li>
             </ul>
           </motion.div>
         </section>
@@ -58,8 +67,6 @@ const Future = () => {
           line-height: 1.5;
           font-size: var(--text-medium);
           color: var(--medium);
-        }
-        @media (max-width: 600px) {
         }
       `}</style>
     </div>
