@@ -6,7 +6,7 @@ const data = require("./pos_words");
 
 let tagger = new pos.Tagger();
 
-export default (req, res) => {
+const submit = (req, res) => {
   if (req.method === "POST") {
     const haiku = [req.body.line_1, req.body.line_2, req.body.line_3];
 
@@ -126,3 +126,5 @@ export default (req, res) => {
     ]);
   }
 };
+
+export default submit;

@@ -2,7 +2,7 @@ const pr = require("../../../utility/haiku_parser");
 const pronouncing = require("pronouncing");
 
 // catches post on keyup and returns current syllable count for the line
-export default (req, res) => {
+const syllableCount = (req, res) => {
   if (req.method === "POST") {
     const syllables = pronouncing.syllableCount(
       pr.sounds(pr.cleanLine(req.body.line))
@@ -13,3 +13,5 @@ export default (req, res) => {
     });
   }
 };
+
+export default syllableCount;
