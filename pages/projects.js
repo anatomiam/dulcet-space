@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const textVariants = {
@@ -37,12 +38,23 @@ const Future = () => {
             exit="exit"
             variants={textVariants}
           >
-            <p className="description">Coming soon.</p>
+            <ul>
+              <li>
+                <Link href="/haiku">
+                  <a>haiku</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/sequencer">
+                  <a>sequencer</a>
+                </Link>
+              </li>
+            </ul>
           </motion.div>
         </section>
       </main>
       <style jsx>{`
-        .description {
+        a {
           line-height: 1.5;
           font-size: var(--text-medium);
           color: var(--medium);

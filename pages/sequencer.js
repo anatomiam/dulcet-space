@@ -4,6 +4,7 @@ import { Controls } from "../components/sequencer/controls";
 import Head from "next/head";
 import { Rows } from "../components/sequencer/rows";
 import { SeqProvider } from "../components/sequencer/provider";
+import { motion } from "framer-motion";
 
 /**
  *
@@ -14,6 +15,25 @@ import { SeqProvider } from "../components/sequencer/provider";
  * OR use modulus on each step
  *
  */
+
+const textVariants = {
+  exit: {
+    y: -20,
+    opacity: 0,
+    transition: { duration: 0.1, ease: "easeOut" },
+  },
+  enter: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      delay: 0,
+      type: "spring",
+      damping: 100,
+      duration: 0.1,
+      ease: "easeIn",
+    },
+  },
+};
 
 const Sequencer = () => {
   const [loaded, setLoaded] = useState(false);
@@ -27,19 +47,27 @@ const Sequencer = () => {
   return (
     <div>
       <Head>
-        <title>Sampler</title>
+        <title>Sequencer</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main>
-        {loaded ? (
-          <SeqProvider>
-            <h1 className="title">Sequence</h1>
-            <Rows />
-            <Controls />
-          </SeqProvider>
-        ) : (
-          <div className="loading">LOADING</div>
-        )}
+        <motion.div
+          initial="exit"
+          animate="enter"
+          exit="exit"
+          variants={textVariants}
+        >
+          {loaded ? (
+            <SeqProvider>
+              <h1 className="title">Sequence</h1>
+              <Rows />
+              <Controls />
+            </SeqProvider>
+          ) : (
+            <div className="loading">LOADING</div>
+          )}
+        </motion.div>
       </main>
       <style jsx>{`
         .loading {
