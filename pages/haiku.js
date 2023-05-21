@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 
 import { Formik } from "formik";
 import Head from "next/head";

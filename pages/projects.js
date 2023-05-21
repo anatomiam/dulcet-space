@@ -50,6 +50,11 @@ const Future = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/song-starter">
+                  <a>song starter</a>
+                </Link>
+              </li>
+              <li>
                 <a
                   href="https://play.google.com/store/apps/details?id=com.knobnotes.app"
                   target="_blank"

@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 
 import { SeqContext } from "./provider";
 import { key } from "./constants";
-import { setters } from "pos/lexicon";
+import { FaPlay, FaPause, FaPlus, FaMinus } from "react-icons/fa";
+import { GrRedo } from "react-icons/gr";
 
 export const Controls = () => {
   const [info, func, dispatch] = useContext(SeqContext);
@@ -10,9 +11,9 @@ export const Controls = () => {
   const [synthVolume, setSynthVolume] = useState(-5);
   return (
     <div>
-      <div className="title">CONTROLS</div>
-      <div>
-        <button
+      <div className="actions">
+        <span
+          className="icon"
           onClick={() => {
             if (!info.started) {
               func.startTransport();
@@ -21,17 +22,36 @@ export const Controls = () => {
             }
           }}
         >
-          {info.started ? "Stop" : "Start"}
-        </button>
-      </div>
-      <div>
-        <button
-          onClick={() => {
-            dispatch({ type: "INITIALIZE", payload: info.matrixNotes });
-          }}
-        >
-          Reset Notes
-        </button>
+          {info.started ? <FaPause /> : <FaPlay />}
+        </span>
+        <span className="tempo-controls">
+          <FaMinus
+            onClick={() => {
+              func.updateBPM(Number(info.BPM) - 1);
+            }}
+          />
+          <input
+            className="tempo"
+            type="number"
+            value={info.BPM}
+            onChange={(e) => {
+              func.updateBPM(e.target.value);
+            }}
+          />
+          <FaPlus
+            onClick={() => {
+              func.updateBPM(Number(info.BPM) + 1);
+            }}
+          />
+        </span>
+        <span className="icon">
+          <GrRedo
+            style={{ transform: "rotate(180deg)" }}
+            onClick={() => {
+              dispatch({ type: "INITIALIZE", payload: info.matrixNotes });
+            }}
+          />
+        </span>
       </div>
 
       <div>
@@ -55,17 +75,6 @@ export const Controls = () => {
         </label>
       </div>
       <div>
-        <label htmlFor="bpm">BPM: </label>
-        <input
-          type="number"
-          name="bpm"
-          value={info.BPM}
-          onChange={(e) => {
-            func.updateBPM(e.target.value);
-          }}
-        />
-      </div>
-      <div>
         <label htmlFor="volume-slider">Volume: </label>
         <input
           type="range"
@@ -81,6 +90,49 @@ export const Controls = () => {
       <style jsx>{`
         .title {
           color: var(--light);
+        }
+        .icon {
+          display: flex;
+          align-items: center;
+          line-height: 1.5;
+          font-size: var(--text-large);
+          color: var(--light);
+        }
+        .redo {
+          transform: rotate(90deg);
+        }
+        .actions {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 10px 0;
+        }
+        .tempo-controls {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--light);
+        }
+        .tempo {
+          color: var(--light);
+          background-color: black;
+          border: none;
+          text-align: center;
+          width: 50px;
+          font-size: var(--text-medium);
+          font-weight: bold;
+          font-family: monospace;
+        }
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        /* Firefox */
+        input[type="number"] {
+          -moz-appearance: textfield;
         }
         label {
           color: var(--light);

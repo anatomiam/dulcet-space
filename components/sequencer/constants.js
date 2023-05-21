@@ -15,7 +15,6 @@ export const key = {
     "E3",
     "D3",
     "C3",
-    "B2",
   ],
   gSharpDorian: [
     "G#5",
@@ -33,14 +32,8 @@ export const key = {
     "B3",
     "A3",
     "G#3",
-    "F#3",
   ],
   pentatonic: [
-    "A6",
-    "G6",
-    "F6",
-    "D6",
-    "B#5",
     "A5",
     "G5",
     "F5",
@@ -53,5 +46,4 @@ export const key = {
     "B#3",
     "A3",
   ],
-  pentaish: ["A6", "G6", "G4", "F4", "D4", "B#3", "A3"],
 };

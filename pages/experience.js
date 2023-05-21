@@ -33,9 +33,43 @@ const Experience = () => {
           <motion.div initial="exit" animate="enter" exit="exit">
             <motion.div variants={textVariants}>
               <h1 className="title">
+                Senior Software Engineer - The New York Times - Wirecutter
+              </h1>
+              <div className="date">Software Engineer: 10/2020 - 01/2022</div>
+              <div className="date">
+                Senior Software Engineer: 01/2022 - present
+              </div>
+              <p className="description indent">
+                Promoted to Senior Software Engineer after my first year, I took
+                the lead in developing a highly effective content publishing
+                service that seamlessly distributes Wirecutter content to the
+                New York Times. This initiative resulted in significant SEO
+                growth and empowered NYT to implement a personalized
+                recommendation algorithm for the NYT homepage, along with other
+                valuable features. As the tech lead, I led the design and
+                implementation of a comprehensive full-stack feature that
+                consistently secures top rankings for Wirecutter articles on
+                Google News during critical events such as Black Friday and
+                Prime Day. Additionally, I successfully orchestrated a seamless
+                user base and API migration across newsletter platforms which
+                has led to a substantial increase in user engagement. As a
+                senior engineer, I actively mentor junior colleagues and
+                contribute to advisory boards, influencing company-wide
+                engineering decisions.
+              </p>
+              <div className="footnote">
+                <code>
+                  • Javascript, React, Node, GraphQL, NextJS, Python, PHP,
+                  Wordpress, AWS, GCP, CircleCI, Docker
+                </code>
+              </div>
+
+              <hr />
+
+              <h1 className="title">
                 Full Stack Developer - Gordon Food Service
               </h1>
-              <span className="date">02/2019 - Present</span>
+              <span className="date">02/2019 - 10/2020</span>
               <p className="description indent">
                 Develop and maintain a suite of customer-facing applications
                 known as Gordon Now that automate customer support duties,
