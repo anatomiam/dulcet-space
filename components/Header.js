@@ -3,32 +3,23 @@ export function Header() {
   return (
     <div>
       <nav className="navigation-menu">
-        <ul className="navigation-list">
+        <ul>
           <li>
-            <Link href="/">
-              <a>index</a>
-            </Link>
+            <Link href="/">index</Link>
           </li>
           <li>
-            <Link href="/contact">
-              <a>contact</a>
-            </Link>
+            <Link href="/contact">contact</Link>
           </li>
           <li>
-            <Link href="/experience">
-              <a>experience</a>
-            </Link>
+            <Link href="/experience">experience</Link>
           </li>
           <li>
-            <Link href="/projects">
-              <a>projects</a>
-            </Link>
+            <Link href="/projects">projects</Link>
           </li>
         </ul>
       </nav>
 
       <style jsx>{`
-        .navigation-list { }
         .navigation-menu {
           line-height: 1.5;
           font-size: var(--small);

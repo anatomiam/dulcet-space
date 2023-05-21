@@ -38,21 +38,15 @@ const Future = () => {
             exit="exit"
             variants={textVariants}
           >
-            <ul>
+            <ul className="navigation-list">
               <li>
-                <Link href="/haiku">
-                  <a>haiku</a>
-                </Link>
+                <Link href="/haiku">haiku</Link>
               </li>
               <li>
-                <Link href="/sequencer">
-                  <a>sequencer</a>
-                </Link>
+                <Link href="/sequencer">sequencer</Link>
               </li>
               <li>
-                <Link href="/song-starter">
-                  <a>song starter</a>
-                </Link>
+                <Link href="/song-starter">song starter</Link>
               </li>
               <li>
                 <a
@@ -68,7 +62,7 @@ const Future = () => {
         </section>
       </main>
       <style jsx>{`
-        a {
+        .navigation-list {
           line-height: 1.5;
           font-size: var(--text-medium);
           color: var(--medium);
