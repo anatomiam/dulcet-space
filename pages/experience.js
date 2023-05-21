@@ -33,7 +33,10 @@ const Experience = () => {
           <motion.div initial="exit" animate="enter" exit="exit">
             <motion.div variants={textVariants}>
               <h1 className="title">
-                Senior Software Engineer - The New York Times - Wirecutter
+                Senior Software Engineer -{" "}
+                <a href="https://www.nytimes.com/wirecutter/">
+                  The New York Times - Wirecutter
+                </a>
               </h1>
               <div className="date">Software Engineer: 10/2020 - 01/2022</div>
               <div className="date">
@@ -67,19 +70,21 @@ const Experience = () => {
               <hr />
 
               <h1 className="title">
-                Full Stack Developer - Gordon Food Service
+                Full Stack Developer -{" "}
+                <a href="https://gfs.com/en-us/"> Gordon Food Service</a>
               </h1>
               <span className="date">02/2019 - 10/2020</span>
               <p className="description indent">
                 Develop and maintain a suite of customer-facing applications
-                known as Gordon Now that automate customer support duties,
-                provide information and ordering options, and enhance the
-                customer experience while working in an Agile setting. These
-                applications are in the form of a mobile app (iOS & Android), a
-                Google Voice Assistant, and a chatbot that is embedded and
-                tailored to various internal and customer-facing sites. I also
-                helped design and build out the CI/CD processes that enforce
-                code quality and automate deployments.
+                known as <a href="https://gordonnow.com/">Gordon Now</a> that
+                automate customer support duties, provide information and
+                ordering options, and enhance the customer experience while
+                working in an Agile setting. These applications are in the form
+                of a mobile app (iOS & Android), a Google Voice Assistant, and a
+                chatbot that is embedded and tailored to various internal and
+                customer-facing sites. I also helped design and build out the
+                CI/CD processes that enforce code quality and automate
+                deployments.
               </p>
               <div className="footnote">
                 <code>
@@ -93,7 +98,8 @@ const Experience = () => {
               <hr />
 
               <h1 className="title">
-                Web Developer (Contract) - Gordon Food Service
+                Web Developer (Contract) -{" "}
+                <a href="https://gfs.com/en-us/">Gordon Food Service</a>
               </h1>
               <span className="date">06/2018 - 02/2019</span>
               <p className="description indent">
@@ -112,7 +118,10 @@ const Experience = () => {
 
               <hr />
 
-              <h1 className="title">Web Developer - One Stop Inc.</h1>
+              <h1 className="title">
+                Web Developer -{" "}
+                <a href="https://onestopinc.com/">One Stop Inc.</a>
+              </h1>
               <span className="date">11/2016 - 06/2018</span>
               <p className="description indent">
                 Maintained and added features to a legacy B2B e-commerce site
@@ -181,6 +190,15 @@ const Experience = () => {
         }
         .date {
           font-size: var(--text-small);
+          color: var(--dark);
+        }
+        a {
+           {
+            /* text-decoration: underline; */
+          }
+          color: var(--light);
+        }
+        a:hover {
           color: var(--dark);
         }
         @media (max-width: 600px) {
