@@ -9,9 +9,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^1.4.0",
     "formik": "^2.1.4",
-    "framer-motion": "^1.11.1",
+    "framer-motion": "^10.12.12",
     "lodash": "^4.17.4",
     "next": "^13.4.3",
     "pos": "^0.4.2",
@@ -20,10 +20,10 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.3.1",
     "tone": "^14.7.77",
-    "yup": "^0.32.11"
+    "yup": "^1.1.1"
   },
   "devDependencies": {
-    "eslint": "8.8.0",
+    "eslint": "8.41.0",
     "eslint-config-next": "^13.4.3"
   }
 }

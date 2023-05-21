@@ -8,7 +8,7 @@ class Space extends App {
 
     return (
       <Layout theme="dark">
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           <Component {...pageProps} key={router.route} />
         </AnimatePresence>
       </Layout>

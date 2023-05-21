@@ -28,7 +28,7 @@ const textVariants = {
     transition: {
       delay: 0,
       type: "spring",
-      damping: 100,
+      damping: 12,
       duration: 0.1,
       ease: "easeIn",
     },
