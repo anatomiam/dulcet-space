@@ -4,7 +4,7 @@ export function Layout(props) {
   const { children, theme } = props;
   return (
     <div className="page-layout">
-      <Header />
+      {/* <Header /> */}
       {children}
       <style jsx global>{`
         :root {

@@ -39,8 +39,10 @@ const Index = () => {
             exit="exit"
             variants={textVariants}
           >
-            <h1 className="title">Hey, I&apos;m Eric.</h1>
-            <h2 className="subtitle">I design and build websites.</h2>
+            <h1 className="subtitle">Coming soon &#8230;</h1>
+
+            {/* <h1 className="title">Hey, I&apos;m Eric.</h1> */}
+            {/* <h2 className="subtitle">I design and build websites.</h2> */}
           </motion.div>
         </section>
       </main>
