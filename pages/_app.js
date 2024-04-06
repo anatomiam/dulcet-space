@@ -1,4 +1,3 @@
-import { AnimatePresence } from "framer-motion";
 import App from "next/app";
 import { Layout } from "../components/Layout";
 
@@ -8,9 +7,7 @@ class Space extends App {
 
     return (
       <Layout theme="dark">
-        <AnimatePresence mode="wait">
-          <Component {...pageProps} key={router.route} />
-        </AnimatePresence>
+        <Component {...pageProps} key={router.route} />
       </Layout>
     );
   }

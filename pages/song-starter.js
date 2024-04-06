@@ -1,25 +1,6 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
-import Head from "next/head";
 
-const textVariants = {
-  exit: {
-    y: -20,
-    opacity: 0,
-    transition: { duration: 0.1, ease: "easeOut" },
-  },
-  enter: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      delay: 0,
-      type: "spring",
-      damping: 12,
-      duration: 0.25,
-      ease: "easeIn",
-    },
-  },
-};
+import Head from "next/head";
 
 const minBpm = 80;
 const maxBpm = 180;
@@ -119,57 +100,50 @@ const SongStarter = () => {
       </Head>
 
       <main>
-        <motion.div
-          initial="exit"
-          animate="enter"
-          exit="exit"
-          variants={textVariants}
+        <div className="text">Key: {key}</div>
+        <div className="text">Mode: {mode}</div>
+        <div className="text">BPM: {bpm}</div>
+        <div className="text">Notes: {notes.join(" ")}</div>
+        <button
+          style={{ padding: "7px", marginTop: "10px" }}
+          onClick={() => {
+            setSong(generateRandomSongStarter());
+          }}
         >
-          <div className="text">Key: {key}</div>
-          <div className="text">Mode: {mode}</div>
-          <div className="text">BPM: {bpm}</div>
-          <div className="text">Notes: {notes.join(" ")}</div>
-          <button
-            style={{ padding: "7px", marginTop: "10px" }}
-            onClick={() => {
-              setSong(generateRandomSongStarter());
-            }}
-          >
-            Generate
-          </button>
-          <div style={{ marginTop: "50px" }}>
-            {fretboard.map((guitarString) => {
-              return (
-                // TODO don't use random keys
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  key={Math.random()}
-                >
-                  {guitarString.map((note, index) => {
-                    if (notes.includes(note)) {
-                      return (
-                        <Note
-                          key={Math.random()}
-                          note={note}
-                          songKey={key}
-                          index={index}
-                        />
-                      );
-                    } else {
-                      return (
-                        <Note key={Math.random()} songKey={key} index={index} />
-                      );
-                    }
-                  })}
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
+          Generate
+        </button>
+        <div style={{ marginTop: "50px" }}>
+          {fretboard.map((guitarString) => {
+            return (
+              // TODO don't use random keys
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                key={Math.random()}
+              >
+                {guitarString.map((note, index) => {
+                  if (notes.includes(note)) {
+                    return (
+                      <Note
+                        key={Math.random()}
+                        note={note}
+                        songKey={key}
+                        index={index}
+                      />
+                    );
+                  } else {
+                    return (
+                      <Note key={Math.random()} songKey={key} index={index} />
+                    );
+                  }
+                })}
+              </div>
+            );
+          })}
+        </div>
       </main>
       <style jsx>{`
         .text {
