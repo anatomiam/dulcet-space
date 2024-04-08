@@ -1,5 +1,6 @@
 import { Header } from "./Header";
 
+// TODO mix-blend-mode for theme mask
 export function Layout(props) {
   const { children, theme } = props;
   return (
@@ -7,6 +8,31 @@ export function Layout(props) {
       <Header />
       {children}
       <style jsx global>{`
+        .page-layout {
+          display: grid;
+          grid-template-columns: 10rem 1fr;
+          height: 100vh;
+        }
+        .container {
+          padding: 7rem 2rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        /* tablets and above breakpoint */
+        @media only screen and (min-width: 768px) {
+          .container {
+            padding: 4rem 12rem;
+          }
+        }
+
+        /* laptops and above breakpoint */
+        @media only screen and (min-width: 1024px) {
+          .container {
+            padding: 5rem 18rem;
+          }
+        }
         :root {
           --white: ${theme === "dark" ? "#fafbfc" : "#cfcdc3"};
           --light: ${theme === "dark" ? "#abc5db" : "#c7c5bc"};
@@ -48,33 +74,6 @@ export function Layout(props) {
 
         * {
           box-sizing: border-box;
-        }
-        .container {
-          padding: 7rem 2rem;
-          overflow: hidden;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        .page-layout {
-          min-height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        /* tablets and above breakpoint */
-        @media only screen and (min-width: 768px) {
-          .container {
-            padding: 4rem 12rem;
-          }
-        }
-
-        /* laptops and above breakpoint */
-        @media only screen and (min-width: 1024px) {
-          .container {
-            padding: 5rem 18rem;
-          }
         }
       `}</style>
     </div>

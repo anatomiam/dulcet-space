@@ -10,7 +10,7 @@ const Future = () => {
       </Head>
 
       <main>
-        <section>
+        <div>
           <ul className="navigation-list">
             <li>
               <Link href="/haiku">haiku</Link>
@@ -31,7 +31,7 @@ const Future = () => {
               </a>
             </li>
           </ul>
-        </section>
+        </div>
       </main>
       <style jsx>{`
         .navigation-list {

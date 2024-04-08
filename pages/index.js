@@ -1,36 +1,101 @@
+import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+
 import Head from "next/head";
-import { useRouter } from "next/router";
 
-const Index = () => {
-  const router = useRouter();
-
+const Contact = () => {
   return (
     <div className="container">
       <Head>
-        <title>Hello</title>
+        <title>Contact</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <section>
-          {/* <h1 className="subtitle">Coming soon&#8230;</h1> */}
-
-          <h1 className="title">Hey, I&apos;m Eric.</h1>
-          <h2 className="subtitle">I design and build websites.</h2>
+          <h1 className="name">Eric Dulcet</h1>
+          <h2 className="title">Software Engineer</h2>
+          <p className="description">
+            front end, back end, middleware, design, chatbots, mobile apps, ETL
+            scripts, newsletters, SEO, CWV, CMS customization, ads,
+            personalization, product recommendation, graphql, APIs, CI/CD, NLP
+          </p>
+          <h4 className="subtitle">Contact</h4>
+          <ul>
+            <li>
+              <a
+                className="link"
+                href="https://www.linkedin.com/in/ericdulcet"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaLinkedinIn />
+                <span className="link-text">Linkedin</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="link"
+                href="https://github.com/anatomiam"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaGithub />
+                <span className="link-text">Github</span>
+              </a>
+            </li>
+            <li>
+              <a
+                className="link"
+                href="https://www.instagram.com/dulce1et"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <FaInstagram />
+                <span className="link-text">Instagram</span>
+              </a>
+            </li>
+          </ul>
         </section>
       </main>
 
       <style jsx>{`
+        ul {
+          margin: 1rem;
+        }
+        a {
+          display: flex;
+          align-items: center;
+        }
+        .description {
+          line-height: 1.5;
+          font-size: var(--text-medium);
+          color: var(--dark);
+        }
         .title {
           margin: 0;
           line-height: 1.15;
-          font-size: var(--text-extra-large);
-          color: var(--dark);
+          font-size: var(--text-large);
+          color: var(--light);
+        }
+        .link {
+          line-height: 1.5;
+          font-size: var(--text-small);
+          color: var(--light);
         }
         .subtitle {
           margin: 0;
-          line-height: 1.5;
-          font-size: var(--text-large);
+          line-height: 1.15;
+          font-size: var(--text-medium);
+          color: var(--medium);
+        }
+        .name {
+          margin: 0;
+          line-height: 1.15;
+          font-size: var(--text-extra-large);
+          color: var(--medium);
+        }
+        .link-text {
+          margin-left: 0.5rem;
           color: var(--medium);
         }
         @media (max-width: 600px) {
@@ -40,4 +105,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Contact;
