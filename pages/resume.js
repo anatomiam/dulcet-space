@@ -1,10 +1,10 @@
 import Head from "next/head";
 
-const Experience = () => {
+const Resume = () => {
   return (
     <div className="container">
       <Head>
-        <title>Experience</title>
+        <title>Resume</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -16,10 +16,15 @@ const Experience = () => {
               The New York Times - Wirecutter
             </a>
           </h1>
-          <div className="date">Software Engineer: 10/2020 - 01/2022</div>
-          <div className="date">
-            Senior Software Engineer: 01/2022 - present
-          </div>
+          <div className="date">01/2022 - present</div>
+          <p className="description indent">TODO!</p>
+          <h1 className="title">
+            Software Engineer -{" "}
+            <a href="https://www.nytimes.com/wirecutter/">
+              The New York Times - Wirecutter
+            </a>
+          </h1>
+          <div className="date">10/2020 - 01/2022</div>
           <p className="description indent">TODO!</p>
           <div className="footnote">
             <code>
@@ -46,18 +51,9 @@ const Experience = () => {
             helped design and build out the CI/CD processes that enforce code
             quality and automate deployments.
           </p>
-          <div className="footnote">
-            <code>
-              • Javascript, React, React Native, Redux, Redux-Saga, Expo,
-              Angular, Python, Java, Kotlin, Spring Boot, Drupal 8, Wordpress,
-              Google Cloud Platform, Kubernetes, Helm, Docker, Jenkins, MySQL
-            </code>
-          </div>
-
-          <hr />
 
           <h1 className="title">
-            Web Developer (Contract) -{" "}
+            Web Developer (on contract) -{" "}
             <a href="https://gfs.com/en-us/">Gordon Food Service</a>
           </h1>
           <span className="date">06/2018 - 02/2019</span>
@@ -69,8 +65,14 @@ const Experience = () => {
             marketing efforts, and scaling an internal ad server to support
             internationalized ads for Canadian customers.
           </p>
+
           <div className="footnote">
-            <code>• Javascript, React, Redux, Python, PHP, Drupal 8, Java</code>
+            <code>
+              • Javascript, React, React Native, Redux, Redux-Saga, Expo,
+              Angular, Python, Java, Kotlin, Spring Boot, PHP, Drupal 8,
+              Wordpress, Google Cloud Platform, Kubernetes, Helm, Docker,
+              Jenkins, MySQL
+            </code>
           </div>
 
           <hr />
@@ -120,7 +122,7 @@ const Experience = () => {
         }
         hr {
           margin: 2rem 0.5rem;
-          border: 1px solid var(--very-dark);
+          border: 1px solid var(--medium);
         }
         .description {
           line-height: 1.5;
@@ -161,4 +163,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default Resume;

@@ -1,4 +1,9 @@
-import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaGithub,
+  FaInstagram,
+  FaLinkedinIn,
+} from "react-icons/fa";
 
 import Head from "next/head";
 import styles from "../styles/index.module.css";
@@ -7,7 +12,7 @@ const Contact = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Contact</title>
+        <title>️Hello</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -15,13 +20,23 @@ const Contact = () => {
         <section>
           <h1 className={styles.name}>Eric Dulcet</h1>
           <h2 className={styles.title}>Software Engineer</h2>
-          <p className={styles.description}>
+          {/* <p className={styles.description}>
             front end, back end, middleware, design, chatbots, mobile apps, ETL
             scripts, newsletters, SEO, CWV, CMS customization, ads,
             personalization, product recommendation, graphql, APIs, CI/CD, NLP
-          </p>
+          </p> */}
           <h4 className={styles.subtitle}>Contact</h4>
           <ul>
+            <li>
+              <a
+                className={styles.link}
+                href="mailto:etdulcet@gmail.com?subject=Work%20Inquiry:%20[Your%20Name]"
+                target="_blank"
+              >
+                <FaEnvelope />
+                <span className={styles.link_text}>Email</span>
+              </a>
+            </li>
             <li>
               <a
                 className={styles.link}

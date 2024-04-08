@@ -44,7 +44,7 @@ const Input = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <Head>
         <title>Parallel Haiku</title>
         <link rel="icon" href="/favicon.ico" />

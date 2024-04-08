@@ -48,21 +48,25 @@
   color: var(--light);
 }
 
+.link:hover {
+  font-size: var(--text-medium);
+}
+
+.link_text {
+  margin-left: 0.5rem;
+  color: var(--medium);
+}
+
 .subtitle {
-  margin: 0;
+  margin: 1rem 0;
   line-height: 1.15;
   font-size: var(--text-medium);
-  color: var(--medium);
+  color: var(--dark);
 }
 
 .name {
   margin: 0;
   line-height: 1.15;
   font-size: var(--text-extra-large);
-  color: var(--medium);
-}
-
-.link_text {
-  margin-left: 0.5rem;
   color: var(--medium);
 }

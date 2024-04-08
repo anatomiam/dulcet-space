@@ -93,25 +93,28 @@ const SongStarter = () => {
   const { key, mode, bpm, notes } = songStarter;
 
   return (
-    <div>
+    <div className="haiku_container">
       <Head>
         <title>Song Starter</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <div className="text">Key: {key}</div>
-        <div className="text">Mode: {mode}</div>
-        <div className="text">BPM: {bpm}</div>
-        <div className="text">Notes: {notes.join(" ")}</div>
-        <button
-          style={{ padding: "7px", marginTop: "10px" }}
-          onClick={() => {
-            setSong(generateRandomSongStarter());
-          }}
-        >
-          Generate
-        </button>
+        <div className="controls">
+          <div className="text">Key: {key}</div>
+          <div className="text">Mode: {mode}</div>
+          <div className="text">BPM: {bpm}</div>
+          <div className="text">Notes: {notes.join(" ")}</div>
+
+          <button
+            style={{ padding: "7px", marginTop: "10px" }}
+            onClick={() => {
+              setSong(generateRandomSongStarter());
+            }}
+          >
+            Generate
+          </button>
+        </div>
         <div style={{ marginTop: "50px" }}>
           {fretboard.map((guitarString) => {
             return (
@@ -146,6 +149,11 @@ const SongStarter = () => {
         </div>
       </main>
       <style jsx>{`
+        .haiku_container {
+          padding: 7rem 2rem;
+          display: flex;
+          justify-content: center;
+        }
         .text {
           color: var(--medium);
         }

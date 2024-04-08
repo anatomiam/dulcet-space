@@ -25,7 +25,7 @@ const Sequencer = () => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <Head>
         <title>Sequencer</title>
         <link rel="icon" href="/favicon.ico" />

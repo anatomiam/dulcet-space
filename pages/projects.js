@@ -21,7 +21,7 @@ const Future = () => {
             <li>
               <Link href="/song-starter">song starter</Link>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="https://play.google.com/store/apps/details?id=com.knobnotes.app"
                 target="_blank"
@@ -29,15 +29,15 @@ const Future = () => {
               >
                 knob notes
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </main>
       <style jsx>{`
         .navigation-list {
           line-height: 1.5;
-          font-size: var(--text-medium);
-          color: var(--medium);
+          font-size: var(--text-extra-large);
+          color: var(--light);
         }
       `}</style>
     </div>
