@@ -1,10 +1,11 @@
 import { FaGithub, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 import Head from "next/head";
+import styles from "../styles/index.module.css";
 
 const Contact = () => {
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Head>
         <title>Contact</title>
         <link rel="icon" href="/favicon.ico" />
@@ -12,95 +13,51 @@ const Contact = () => {
 
       <main>
         <section>
-          <h1 className="name">Eric Dulcet</h1>
-          <h2 className="title">Software Engineer</h2>
-          <p className="description">
+          <h1 className={styles.name}>Eric Dulcet</h1>
+          <h2 className={styles.title}>Software Engineer</h2>
+          <p className={styles.description}>
             front end, back end, middleware, design, chatbots, mobile apps, ETL
             scripts, newsletters, SEO, CWV, CMS customization, ads,
             personalization, product recommendation, graphql, APIs, CI/CD, NLP
           </p>
-          <h4 className="subtitle">Contact</h4>
+          <h4 className={styles.subtitle}>Contact</h4>
           <ul>
             <li>
               <a
-                className="link"
+                className={styles.link}
                 href="https://www.linkedin.com/in/ericdulcet"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FaLinkedinIn />
-                <span className="link-text">Linkedin</span>
+                <span className={styles.link_text}>Linkedin</span>
               </a>
             </li>
             <li>
               <a
-                className="link"
+                className={styles.link}
                 href="https://github.com/anatomiam"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FaGithub />
-                <span className="link-text">Github</span>
+                <span className={styles.link_text}>Github</span>
               </a>
             </li>
             <li>
               <a
-                className="link"
+                className={styles.link}
                 href="https://www.instagram.com/dulce1et"
                 target="_blank"
                 rel="noreferrer"
               >
                 <FaInstagram />
-                <span className="link-text">Instagram</span>
+                <span className={styles.link_text}>Instagram</span>
               </a>
             </li>
           </ul>
         </section>
       </main>
-
-      <style jsx>{`
-        ul {
-          margin: 1rem;
-        }
-        a {
-          display: flex;
-          align-items: center;
-        }
-        .description {
-          line-height: 1.5;
-          font-size: var(--text-medium);
-          color: var(--dark);
-        }
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: var(--text-large);
-          color: var(--light);
-        }
-        .link {
-          line-height: 1.5;
-          font-size: var(--text-small);
-          color: var(--light);
-        }
-        .subtitle {
-          margin: 0;
-          line-height: 1.15;
-          font-size: var(--text-medium);
-          color: var(--medium);
-        }
-        .name {
-          margin: 0;
-          line-height: 1.15;
-          font-size: var(--text-extra-large);
-          color: var(--medium);
-        }
-        .link-text {
-          margin-left: 0.5rem;
-          color: var(--medium);
-        }
-        @media (max-width: 600px) {
-        }
-      `}</style>
     </div>
   );
 };

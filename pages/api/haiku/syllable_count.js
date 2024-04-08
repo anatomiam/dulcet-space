@@ -1,4 +1,4 @@
-const pr = require("../../../utility/haiku_parser");
+const pr = require("../../../haiku/haiku_parser");
 const pronouncing = require("pronouncing");
 
 // catches post on keyup and returns current syllable count for the line

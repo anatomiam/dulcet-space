@@ -1,4 +1,4 @@
-const pr = require("../../../utility/haiku_parser");
+const pr = require("../../../haiku/haiku_parser");
 const pronouncing = require("pronouncing");
 const pos = require("pos");
 const _ = require("lodash");

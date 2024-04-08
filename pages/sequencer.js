@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
-import { Controls } from "../components/sequencer/controls";
+import { Controls } from "../sequencer/controls";
 import Head from "next/head";
-import { Rows } from "../components/sequencer/rows";
-import { SeqProvider } from "../components/sequencer/provider";
+import { Rows } from "../sequencer/rows";
+import { SeqProvider } from "../sequencer/provider";
 
 /**
  *

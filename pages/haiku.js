@@ -20,9 +20,9 @@ const Input = () => {
   });
 
   const [syllableCounts, setSyllableCounts] = useState({
-    line_1: 0,
-    line_2: 0,
-    line_3: 0,
+    line_1: 5,
+    line_2: 7,
+    line_3: 5,
   });
 
   const handleKeyUp = (event) => {

@@ -105,7 +105,7 @@ exports.randomWord = (line) => {
 // if there is a word that doesn't have the same stress pattern and rhyme, it will return undefined. this function
 // replaces undefined with the original word
 exports.removeUndefined = (original, generated) => {
-  newest = [];
+  let newest = [];
   generated.map((word, i) => {
     if (word == undefined) {
       newest.push(original[i]);
@@ -118,7 +118,7 @@ exports.removeUndefined = (original, generated) => {
 
 // function as removeUndefined, except removes *empty* and replaces with new random word
 exports.removeEmpty = (randomWord, generated) => {
-  newest = [];
+  let newest = [];
   generated.map((word, i) => {
     if (word === "*empty*") {
       newest.push(randomWord[i]);
@@ -131,7 +131,7 @@ exports.removeEmpty = (randomWord, generated) => {
 
 // takes a function, and one or two arrays of arrays, maps each array through the function and returns and array of arrays
 exports.runHaikuThrough = (func, haiku, haiku2 = false) => {
-  lines = [];
+  let lines = [];
   if (haiku2 === false) {
     haiku.map((line) => {
       lines.push(func(line));
@@ -146,7 +146,7 @@ exports.runHaikuThrough = (func, haiku, haiku2 = false) => {
 
 // takes a file path to list of words and returns an array of each word in the file
 exports.parseLibrary = (library) => {
-  words = [];
+  let words = [];
   _.forEach(library.split("\n"), (word) => {
     if (word.length == 0) {
       return;
