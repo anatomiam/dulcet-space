@@ -4,11 +4,37 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 import Head from "next/head";
 import styles from "../styles/index.module.css";
 
 const Contact = () => {
+  const words = [
+    "front end",
+    "back end",
+    "middleware",
+    "design",
+    "chatbots",
+    "mobile apps",
+    "ETL scripts",
+    "newsletters",
+    "SEO",
+    "CWV",
+    "CMS customization",
+    "ads",
+    "personalization",
+    "product recommendation",
+    "graphql",
+    "APIs",
+    "CI/CD",
+    "NLP",
+  ];
+
+  const Word = ({ word }) => {
+    return <span className={styles.highlight}>{word}, </span>;
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,11 +46,11 @@ const Contact = () => {
         <section>
           <h1 className={styles.name}>Eric Dulcet</h1>
           <h2 className={styles.title}>Software Engineer</h2>
-          {/* <p className={styles.description}>
-            front end, back end, middleware, design, chatbots, mobile apps, ETL
-            scripts, newsletters, SEO, CWV, CMS customization, ads,
-            personalization, product recommendation, graphql, APIs, CI/CD, NLP
-          </p> */}
+          <p className={styles.description}>
+            {words.map((word) => {
+              return <Word word={word} key={word} />;
+            })}
+          </p>
           <h4 className={styles.subtitle}>Contact</h4>
           <ul>
             <li>
