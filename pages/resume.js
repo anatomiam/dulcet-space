@@ -14,33 +14,58 @@ const Resume = () => {
             <h1 className="title">
               Senior Software Engineer -{" "}
               <a href="https://www.nytimes.com/wirecutter/">
-                The New York Times - Wirecutter
+                The New York Times, Wirecutter
               </a>
             </h1>
-            <div className="date">01/2022 - present</div>
-            <p className="description indent">TODO!</p>
-            <h1 className="title">
-              Software Engineer -{" "}
-              <a href="https://www.nytimes.com/wirecutter/">
-                The New York Times - Wirecutter
-              </a>
-            </h1>
-            <div className="date">10/2020 - 01/2022</div>
-            <p className="description indent">TODO!</p>
+            <div className="date">
+              <b>Software Engineer</b>: 10/20 - 01/22
+            </div>
+            <div className="date">
+              <b>Senior Software Engineer</b>: 01/22 - Present
+            </div>
+            <p className="description indent">
+              As an engineer on the Reader Growth team I focus on features
+              related to growing our audience including SEO optimizations,
+              improving Core Web Vitals, off-platform presence (newsletters and
+              Apple News), and integrating with services that NYT teams provide.
+              Some projects that I acted as tech lead on include:
+            </p>
+            <ul>
+              <li>
+                • A service that publishes all Wirecutter content to The New
+                York Times publishing pipeline
+              </li>
+              <li>
+                • The data and api migration of newsletter subscription services
+              </li>
+              <li>
+                • A feature called Live Blog Posts that has resulted in
+                Wirecutter articles getting top prioritization in Google News
+                feeds during major deal events
+              </li>
+              <li>
+                • A brand new interactive article type called{" "}
+                <a href="https://www.nytimes.com/wirecutter/product-finder/coffee">
+                  Product Finder
+                </a>
+              </li>
+              <li>
+                • Building a custom pipeline that transforms and publishes
+                Wirecutter content to Apple News
+              </li>
+            </ul>
             <div className="footnote">
               <code>
                 • Javascript, React, Node, GraphQL, NextJS, Python, PHP,
                 Wordpress, AWS, GCP, CircleCI, Docker
               </code>
             </div>
-
             <hr />
-
             <h1 className="title">
               Full Stack Developer -{" "}
               <a href="https://gfs.com/en-us/"> Gordon Food Service</a>
             </h1>
-            <span className="date">02/2019 - 10/2020</span>
+            <span className="date">02/19 - 10/20</span>
             <p className="description indent">
               Develop and maintain a suite of customer-facing applications known
               as <a href="https://gordonnow.com/">Gordon Now</a> that automate
@@ -52,12 +77,11 @@ const Resume = () => {
               helped design and build out the CI/CD processes that enforce code
               quality and automate deployments.
             </p>
-
             <h1 className="title">
-              Web Developer (on contract) -{" "}
+              Web Developer (as a contractor) -{" "}
               <a href="https://gfs.com/en-us/">Gordon Food Service</a>
             </h1>
-            <span className="date">06/2018 - 02/2019</span>
+            <span className="date">06/18 - 02/19</span>
             <p className="description indent">
               Collaborated with many teams on a variety of projects in the
               marketing technology department. Notable projects include building
@@ -66,7 +90,6 @@ const Resume = () => {
               digital marketing efforts, and scaling an internal ad server to
               support internationalized ads for Canadian customers.
             </p>
-
             <div className="footnote">
               <code>
                 • Javascript, React, React Native, Redux, Redux-Saga, Expo,
@@ -75,14 +98,12 @@ const Resume = () => {
                 Jenkins, MySQL
               </code>
             </div>
-
             <hr />
-
             <h1 className="title">
               Web Developer -{" "}
               <a href="https://onestopinc.com/">One Stop Inc.</a>
             </h1>
-            <span className="date">11/2016 - 06/2018</span>
+            <span className="date">11/16 - 06/18</span>
             <p className="description indent">
               Maintained and added features to a legacy B2B e-commerce site that
               handled ~80% of all sales. Lead the development of a complete
@@ -98,11 +119,9 @@ const Resume = () => {
                 jQuery, PHP, Python Django, Postgres, MongoDB, Vagrant, Docker{" "}
               </code>
             </div>
-
             <hr />
-
             <h1 className="title">Education</h1>
-            <div className="date">08/2009 - 05/2013</div>
+            <div className="date">08/09 - 05/13</div>
             <p>
               <strong className="description">
                 Central Michigan University - Mount Pleasant, MI
@@ -162,6 +181,15 @@ const Resume = () => {
         }
         a:hover {
           color: var(--dark);
+        }
+        ul {
+          margin-left: 2em;
+          margin-bottom: 1em;
+        }
+        li {
+          line-height: 1.5;
+          font-size: var(--text-small);
+          color: var(--medium);
         }
       `}</style>
     </div>

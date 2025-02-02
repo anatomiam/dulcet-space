@@ -10,9 +10,9 @@ export function Header() {
           <li>
             <Link href="/resume">resume</Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/projects">projects</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
 
