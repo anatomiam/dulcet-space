@@ -5,14 +5,14 @@ export function Header() {
       <nav className="sticky">
         <ul>
           <li>
-            <Link href="/">index</Link>
+            <Link href="/">contact</Link>
           </li>
           <li>
             <Link href="/resume">resume</Link>
           </li>
-          {/* <li>
+          <li>
             <Link href="/projects">projects</Link>
-          </li> */}
+          </li>
         </ul>
       </nav>
 

@@ -1,22 +1,18 @@
 .container {
-  padding: 7rem 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 3rem 2rem;
 }
 
 /* tablets and above breakpoint */
 @media only screen and (min-width: 768px) {
   .container {
-    padding: 4rem 12rem;
+    padding: 3rem 12rem;
   }
 }
 
 /* laptops and above breakpoint */
 @media only screen and (min-width: 1024px) {
   .container {
-    padding: 5rem 18rem;
+    padding: 3rem 18rem;
   }
 }
 
@@ -60,6 +56,11 @@
 .link_text {
   margin-left: 0.5rem;
   color: var(--medium);
+}
+
+.section {
+  display: flex;
+  justify-content: center;
 }
 
 .subtitle {
