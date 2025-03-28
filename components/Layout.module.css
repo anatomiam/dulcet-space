@@ -1,0 +1,27 @@
+.pageLayout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  flex: 1;
+}
+
+/* tablets and above breakpoint */
+@media only screen and (min-width: 768px) {
+  .container {
+    padding: 3rem 2rem;
+  }
+}
+
+/* laptops and above breakpoint */
+@media only screen and (min-width: 1024px) {
+  .container {
+    padding: 3rem 4rem;
+  }
+} 

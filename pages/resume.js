@@ -1,8 +1,9 @@
 import Head from "next/head";
+import styles from "../components/Layout.module.css";
 
 const Resume = () => {
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Head>
         <title>Resume</title>
         <link rel="icon" href="/favicon.ico" />

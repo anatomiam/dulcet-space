@@ -1,0 +1,28 @@
+:root {
+  --error: #cc0103;
+  --text-very-small: 0.85rem;
+  --text-small: 1rem;
+  --text-medium: 1.5rem;
+  --text-large: 2.5rem;
+  --text-extra-large: 4rem;
+}
+
+:root[data-theme="light"] {
+  --white: #cfcdc3;
+  --light: #c7c5bc;
+  --medium: #9b6c6e;
+  --dark: #98817e;
+  --very-dark: #4d413f;
+  --black: #5c554f;
+  --background: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --white: #fafbfc;
+  --light: #abc5db;
+  --medium: #758a9d;
+  --dark: #485663;
+  --very-dark: #1d252b;
+  --black: #06090d;
+  --background: #06090d;
+} 
