@@ -34,6 +34,22 @@ const Future = () => {
         </div>
       </main>
       <style jsx>{`
+        .container {
+          padding: 3rem 2rem;
+        }
+
+        @media only screen and (min-width: 768px) {
+          .container {
+            padding: 3rem 12rem;
+          }
+        }
+
+        @media only screen and (min-width: 1024px) {
+          .container {
+            padding: 3rem 18rem;
+          }
+        }
+
         .navigation-list {
           line-height: 1.5;
           font-size: var(--text-extra-large);

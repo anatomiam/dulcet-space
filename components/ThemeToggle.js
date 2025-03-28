@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import styles from './ThemeToggle.module.css';
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     // Get initial theme from HTML element
-    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     setTheme(currentTheme);
   }, []);
 

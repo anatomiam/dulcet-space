@@ -1,0 +1,146 @@
+.container {
+  padding: 3rem 2rem;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    padding: 3rem 12rem;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .container {
+    padding: 3rem 18rem;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.haikuContainer {
+  width: 40vw;
+}
+
+@media only screen and (max-width: 768px) {
+  .haikuContainer {
+    width: 90vw;
+  }
+}
+
+.newHaiku {
+  width: 40vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .newHaiku {
+    width: 90vw;
+  }
+}
+
+.input {
+  width: 100%;
+  display: block;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid var(--dark);
+  color: var(--light);
+  font-size: 1.5rem;
+  padding: 1.5rem 1rem 0.5rem 1rem;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.input:focus {
+  border-bottom: 2px solid var(--light);
+}
+
+.hasError {
+  border-bottom: 2px solid var(--error);
+}
+
+.buttonContainer {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px 0 5px 0;
+}
+
+.submitButton {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+}
+
+.line {
+  text-align: center;
+  display: block;
+  line-height: 1.5;
+  font-size: var(--text-medium);
+  color: var(--medium);
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.helpIcon {
+  position: relative;
+  color: var(--medium);
+  cursor: pointer;
+}
+
+.helpIcon:hover .tooltip {
+  display: block;
+  opacity: 1;
+}
+
+.tooltip {
+  display: none;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--very-dark);
+  color: var(--light);
+  padding: 1rem;
+  border-radius: 5px;
+  width: 300px;
+  font-size: var(--text-small);
+  line-height: 1.5;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease;
+}
+
+@media only screen and (max-width: 768px) {
+  .tooltip {
+    width: 250px;
+  }
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--very-dark) transparent;
+}

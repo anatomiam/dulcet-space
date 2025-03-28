@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { Formik } from "formik";
 import Head from "next/head";
 import axios from "axios";
+import { FaQuestionCircle } from 'react-icons/fa';
+import styles from '../styles/haiku.module.css';
 
 const validationSchema = yup.object().shape({
   line_1: yup.string().required("Required"),
@@ -18,6 +20,8 @@ const Input = () => {
     new_line_2: ".",
     new_line_3: ".",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [syllableCounts, setSyllableCounts] = useState({
     line_1: 5,
@@ -44,14 +48,14 @@ const Input = () => {
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <Head>
         <title>Parallel Haiku</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div className="haiku-container">
+      <main className={styles.main}>
+        <div className={styles.haikuContainer}>
           <Formik
             initialValues={{
               line_1: "An old silent pond",
@@ -60,6 +64,7 @@ const Input = () => {
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
+              setIsLoading(true);
               axios
                 .post("/api/haiku/submit", {
                   line_1: values.line_1,
@@ -73,7 +78,10 @@ const Input = () => {
                     new_line_3: response.data[0][2].join(" "),
                   });
                 })
-                .catch((error) => {});
+                .catch((error) => {})
+                .finally(() => {
+                  setIsLoading(false);
+                });
             }}
           >
             {({
@@ -87,8 +95,8 @@ const Input = () => {
               <form onSubmit={handleSubmit}>
                 <input
                   autoFocus
-                  className={`input ${
-                    errors.line_1 && touched.line_1 ? "has-error" : null
+                  className={`${styles.input} ${
+                    errors.line_1 && touched.line_1 ? styles.hasError : null
                   }`}
                   id="line_1"
                   name="line_1"
@@ -97,10 +105,10 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_1}
                 />
-                <span>{syllableCounts.line_1}</span>
+                <span className={styles.line}>{syllableCounts.line_1}</span>
                 <input
-                  className={`input ${
-                    errors.line_2 && touched.line_2 ? "has-error" : null
+                  className={`${styles.input} ${
+                    errors.line_2 && touched.line_2 ? styles.hasError : null
                   }`}
                   id="line_2"
                   name="line_2"
@@ -109,10 +117,10 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_2}
                 />
-                <span>{syllableCounts.line_2}</span>
+                <span className={styles.line}>{syllableCounts.line_2}</span>
                 <input
-                  className={`input ${
-                    errors.line_3 && touched.line_3 ? "has-error" : null
+                  className={`${styles.input} ${
+                    errors.line_3 && touched.line_3 ? styles.hasError : null
                   }`}
                   id="line_3"
                   name="line_3"
@@ -121,60 +129,28 @@ const Input = () => {
                   onKeyUp={(e) => handleKeyUp(e)}
                   value={values.line_3}
                 />
-                <span>{syllableCounts.line_3}</span>
-                <div className="button-container">
-                  <button type="submit">Submit</button>
+                <span className={styles.line}>{syllableCounts.line_3}</span>
+                <div className={styles.buttonContainer}>
+                  <div className={styles.helpIcon}>
+                    <FaQuestionCircle size={20} />
+                    <div className={styles.tooltip}>
+                      <p>Enter a haiku following the traditional 5-7-5 syllable pattern. The numbers below each line show the current syllable count. Click submit to generate a parallel haiku.</p>
+                    </div>
+                  </div>
+                  <button type="submit" disabled={isLoading} className={styles.submitButton}>
+                    {isLoading ? "Generating..." : "Submit"}
+                  </button>
                 </div>
               </form>
             )}
           </Formik>
         </div>
-        <div className="new-haiku">
-          <span>{newLines.new_line_1}</span>
-          <span>{newLines.new_line_2}</span>
-          <span>{newLines.new_line_3}</span>
+        <div className={styles.newHaiku}>
+          <span className={styles.line}>{newLines.new_line_1}</span>
+          <span className={styles.line}>{newLines.new_line_2}</span>
+          <span className={styles.line}>{newLines.new_line_3}</span>
         </div>
       </main>
-      <style jsx>{`
-        .haiku-container {
-          width: 40vw;
-        }
-        .input {
-          width: 100%;
-          display: block;
-          background-color: inherit;
-          border: none;
-          outline: none;
-          border-bottom: 1px solid var(--dark);
-          color: var(--light);
-          font-size: 1.5rem;
-          padding: 1.5rem 1rem 0.5rem 1rem;
-        }
-        .input:focus {
-          border-bottom: 2px solid var(--light);
-        }
-        .has-error {
-          border-bottom: 2px solid var(--error);
-        }
-        .button-container {
-          text-align: right;
-        }
-        button[type="submit"] {
-          margin: 15px 0 5px 0;
-          padding: 0.5rem;
-          border: none;
-          border-radius: 5px;
-          background-color: var(--dark);
-          color: var(--light);
-        }
-        span {
-          text-align: center;
-          display: block;
-          line-height: 1.5;
-          font-size: var(--text-medium);
-          color: var(--medium);
-        }
-      `}</style>
     </div>
   );
 };
