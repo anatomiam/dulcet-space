@@ -43,6 +43,20 @@ const Sequencer = () => {
         )}
       </main>
       <style jsx>{`
+        .container {
+          padding: 7rem 2rem;
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          box-sizing: border-box;
+        }
+        @media (max-width: 768px) {
+          .container {
+            padding: 4rem 1rem;
+          }
+        }
         .loading {
           margin: 0;
           line-height: 1.15;

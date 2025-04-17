@@ -1,6 +1,6 @@
 // Create the matrix
 const initializeMatrix = (notesArray) => {
-  const stepsArray = [...Array(notesArray.length).keys()];
+  const stepsArray = [...Array(16).keys()]; // Always create 16 steps
 
   // creates 2d array, each entry holds it's own state, e.g. note, selected
   const matrixArr = notesArray.map((note) => {
@@ -13,7 +13,7 @@ const initializeMatrix = (notesArray) => {
 
 // Create the matrix
 const initializePlayNotes = (sequenceLength) => {
-  const stepsArray = [...Array(sequenceLength).keys()];
+  const stepsArray = [...Array(16).keys()]; // Always create 16 steps
 
   // sets up a dict that will contain an array of notes to play for each step
   const playNotesDict = {};

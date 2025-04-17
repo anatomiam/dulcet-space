@@ -7,9 +7,12 @@ export const Steps = ({ row, rowIndex }) => {
   return (
     <span className="step-container">
       {row.map((currentStep) => {
+        const isDownbeat = [0, 4, 8, 12].includes(currentStep.step);
         const stepClasses = `step ${
           info.stepTime.step === currentStep.step ? "current" : null
-        } ${currentStep.selected ? "selected" : null}`;
+        } ${currentStep.selected ? "selected" : null} ${
+          isDownbeat ? "downbeat" : null
+        }`;
 
         return (
           <div
@@ -67,6 +70,15 @@ export const Steps = ({ row, rowIndex }) => {
           border: 1px solid var(--light);
           color: var(--light);
           font-size: var(--text-very-small);
+        }
+        .downbeat {
+          border-width: 3px;
+        }
+        @media (max-width: 768px) {
+          .step {
+            height: 16px;
+            width: 16px;
+          }
         }
         .step:hover {
           transform: scale(1.3);

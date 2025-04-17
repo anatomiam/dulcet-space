@@ -10,7 +10,7 @@ export const Controls = () => {
   const keyNames = Object.keys(key);
   const [synthVolume, setSynthVolume] = useState(-5);
   return (
-    <div>
+    <div style={{ paddingLeft: '40px' }}>
       <div className="actions">
         <span
           className="icon"
@@ -54,7 +54,7 @@ export const Controls = () => {
         </span>
       </div>
 
-      <div>
+      <div style={{ padding: '10px 0' }}>
         <label htmlFor="key-select">
           Key:
           <select
@@ -74,7 +74,7 @@ export const Controls = () => {
           </select>
         </label>
       </div>
-      <div>
+      <div style={{ padding: '10px 0' }}>
         <label htmlFor="volume-slider">Volume: </label>
         <input
           type="range"

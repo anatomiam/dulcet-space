@@ -16,7 +16,7 @@ export const SeqProvider = ({ children }) => {
   const [synth, setSynth] = useState(null);
   const [BPM, setBPM] = useState(180);
   const [mouseDown, setMouseDown] = useState(false);
-  const [matrixNotes, setMatrixNotes] = useState(key.cMajor);
+  const [matrixNotes, setMatrixNotes] = useState(key.aMinor);
   const [started, setStarted] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, matrixNotes, init);
@@ -84,7 +84,7 @@ export const SeqProvider = ({ children }) => {
     let x = 0;
     const sequence = Tone.Transport.scheduleRepeat((time) => {
       setStepTime({ step: x, time, played: false });
-      x = (x + 1) % matrixNotes.length;
+      x = (x + 1) % 16; // Always loop through 16 steps
     }, "8n");
 
     return () => {
