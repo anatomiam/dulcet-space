@@ -2,8 +2,9 @@ import * as Tone from "tone";
 
 import React, { useEffect, useReducer, useState } from "react";
 import { init, reducer } from "./reducer";
+import { generateScale } from "./keys";
 
-import { key } from "./constants";
+import { key } from "./keys";
 
 export const SeqContext = React.createContext();
 
@@ -16,7 +17,7 @@ export const SeqProvider = ({ children }) => {
   const [synth, setSynth] = useState(null);
   const [BPM, setBPM] = useState(180);
   const [mouseDown, setMouseDown] = useState(false);
-  const [matrixNotes, setMatrixNotes] = useState(key.aMinor);
+  const [matrixNotes, setMatrixNotes] = useState(generateScale("A", "Aeolian"));
   const [started, setStarted] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, matrixNotes, init);

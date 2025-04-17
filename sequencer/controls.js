@@ -1,14 +1,32 @@
 import React, { useContext, useState } from "react";
 
 import { SeqContext } from "./provider";
-import { key } from "./constants";
+import { keys, modes, generateScale } from "./keys";
 import { FaPlay, FaPause, FaPlus, FaMinus } from "react-icons/fa";
 import { GrRedo } from "react-icons/gr";
 
 export const Controls = () => {
   const [info, func, dispatch] = useContext(SeqContext);
-  const keyNames = Object.keys(key);
   const [synthVolume, setSynthVolume] = useState(-5);
+  const [selectedKey, setSelectedKey] = useState("A");
+  const [selectedMode, setSelectedMode] = useState("Aeolian");
+
+  const handleKeyChange = (e) => {
+    const newKey = e.target.value;
+    setSelectedKey(newKey);
+    const scale = generateScale(newKey, selectedMode);
+    func.setMatrixNotes(scale);
+    dispatch({ type: "INITIALIZE", payload: scale });
+  };
+
+  const handleModeChange = (e) => {
+    const newMode = e.target.value;
+    setSelectedMode(newMode);
+    const scale = generateScale(selectedKey, newMode);
+    func.setMatrixNotes(scale);
+    dispatch({ type: "INITIALIZE", payload: scale });
+  };
+
   return (
     <div style={{ paddingLeft: '40px' }}>
       <div className="actions">
@@ -56,19 +74,29 @@ export const Controls = () => {
 
       <div style={{ padding: '10px 0' }}>
         <label htmlFor="key-select">
-          Key:
+          Root Note:
           <select
             name="key-select"
-            value={info.matrixNotes.name}
-            onChange={(e) => {
-              // triggers useEffect that resets the looper
-              func.setMatrixNotes(key[e.target.value]);
-              dispatch({ type: "INITIALIZE", payload: key[e.target.value] });
-            }}
+            value={selectedKey}
+            onChange={handleKeyChange}
           >
-            {keyNames.map((keyName) => (
-              <option value={keyName} key={keyName}>
-                {keyName}
+            {keys.map((key) => (
+              <option value={key} key={key}>
+                {key}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label htmlFor="mode-select" style={{ marginLeft: '20px' }}>
+          Mode:
+          <select
+            name="mode-select"
+            value={selectedMode}
+            onChange={handleModeChange}
+          >
+            {Object.keys(modes).map((mode) => (
+              <option value={mode} key={mode}>
+                {mode}
               </option>
             ))}
           </select>
@@ -136,6 +164,13 @@ export const Controls = () => {
         }
         label {
           color: var(--light);
+        }
+        select {
+          margin-left: 10px;
+          background-color: black;
+          color: var(--light);
+          border: 1px solid var(--light);
+          padding: 5px;
         }
       `}</style>
     </div>

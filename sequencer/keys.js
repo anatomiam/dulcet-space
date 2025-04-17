@@ -1,0 +1,35 @@
+export const keys = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+
+// the name of the mode and the step sequence for that mode
+export const modes = {
+  Ionian: [0, 2, 4, 5, 7, 9, 11],
+  Dorian: [0, 2, 3, 5, 7, 9, 10],
+  Phrygian: [0, 1, 3, 5, 7, 8, 10],
+  Lydian: [0, 2, 4, 6, 7, 9, 11],
+  Mixolydian: [0, 2, 4, 5, 7, 9, 10],
+  Aeolian: [0, 2, 3, 5, 7, 8, 10],
+  Locrian: [0, 1, 3, 5, 6, 8, 10],
+};
+
+export const generateScale = (rootNote, mode) => {
+  // Find the index of the root note
+  const rootIndex = keys.findIndex(key => key === rootNote);
+  
+  // Rearrange the keys array to start with the root note
+  const rearrangedKeys = [...keys.slice(rootIndex), ...keys.slice(0, rootIndex)];
+  
+  // Generate the scale notes based on the mode intervals
+  const scaleNotes = modes[mode].map(interval => rearrangedKeys[interval]);
+  
+  // Generate 2 octaves plus the third root note octave
+  const octaves = [3, 4];
+  const fullScale = octaves.flatMap(octave => 
+    scaleNotes.map(note => `${note}${octave}`)
+  );
+  
+  // Add the third root note octave
+  fullScale.push(`${rootNote}5`);
+  
+  // Reverse the array so lowest notes are at the bottom
+  return fullScale.reverse();
+};
